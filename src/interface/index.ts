@@ -26,3 +26,8 @@ export interface IProduct {
     }
 }
 
+export interface IProductForm {
+    name: "title" | "description" | "price" | "category" | "rate" | "count",
+    type: string,
+    placeholder: string,
+}

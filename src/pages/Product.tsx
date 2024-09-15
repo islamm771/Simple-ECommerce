@@ -18,6 +18,10 @@ const Product = () => {
                 userId,
                 productId,
                 quantity: 1
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${userData.token}`
+                }
             })
             if (status === 200 || status === 201) {
                 toast.success('Product is added to card', {
@@ -67,11 +71,11 @@ const Product = () => {
                         </p>
                         <div className="flex mb-4">
                             <div className="mr-4">
-                                <span className="font-bold text-gray-700 dark:text-gray-300">Price:</span>
+                                <span className="font-bold text-gray-700 dark:text-gray-300">Price: </span>
                                 <span className="text-gray-600 dark:text-gray-300">${productData.price}</span>
                             </div>
                             <div>
-                                <span className="font-bold text-gray-700 dark:text-gray-300">Category:</span>
+                                <span className="font-bold text-gray-700 dark:text-gray-300">Category: </span>
                                 <span className="text-gray-600 dark:text-gray-300">{productData.category}</span>
                             </div>
                         </div>

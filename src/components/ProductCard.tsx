@@ -22,6 +22,10 @@ const ProductCard = ({ product, qunatity }: IProps) => {
                 userId,
                 productId,
                 quantity: 1
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${userData.token}`
+                }
             })
             if (status === 200 || status === 201) {
                 toast.success('Product is added to card', {
@@ -40,6 +44,10 @@ const ProductCard = ({ product, qunatity }: IProps) => {
             const { status } = await axiosInstance.post("/cart/remove", {
                 userId,
                 productId,
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${userData.token}`
+                }
             })
             if (status === 200 || status === 201) {
                 toast.success('Product is removed from card', {
@@ -57,7 +65,7 @@ const ProductCard = ({ product, qunatity }: IProps) => {
 
     return <div className="product-card shadow-md p-4 rounded-lg space-y-4 relative">
         <h3 className="font-bold text-[20px]">
-            <Link to={`products/${product.id}`}>{TitleSpliter(product.title)}</Link>
+            <Link to={`/products/${product.id}`}>{TitleSpliter(product.title)}</Link>
         </h3>
         {qunatity && (
             <span className="bg-blue-100 text-blue-800 text-xs font-semibold w-8 h-8 flex items-center justify-center rounded-full absolute top-0 right-2">

@@ -1,4 +1,4 @@
-import { ILoginForm } from "../interface";
+import { ILoginForm, IProductForm } from "../interface";
 
 export const LOGIN_FORM: ILoginForm[] = [
     {
@@ -11,4 +11,38 @@ export const LOGIN_FORM: ILoginForm[] = [
         type: "password",
         placeholder: "Enter Password"
     }
+]
+
+
+export const PRODUCT_FORM: IProductForm[] = [
+    {
+        name: "title",
+        placeholder: "Enter Product Name",
+        type: "text"
+    },
+    {
+        name: "description",
+        placeholder: "Enter Product Description",
+        type: "text"
+    },
+    {
+        name: "price",
+        placeholder: "Enter Product Price",
+        type: "number"
+    },
+    {
+        name: "category",
+        placeholder: "Enter Product Category",
+        type: "text"
+    },
+    {
+        name: "rate",
+        placeholder: "Enter Product Rating",
+        type: "number"
+    },
+    {
+        name: "count",
+        placeholder: "Enter Product Count",
+        type: "number"
+    },
 ]

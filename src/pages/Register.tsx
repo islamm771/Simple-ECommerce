@@ -9,18 +9,30 @@ import toast from "react-hot-toast"
 import { AxiosError } from "axios"
 import { useNavigate } from "react-router-dom"
 import { IAxiosError } from "../interface"
+import Select from "../components/ui/select"
+import { useState } from "react"
+
+
+enum GenderEnum {
+    female = "female",
+    male = "male",
+    other = "other",
+}
 
 interface IFormInput {
     username: string,
     email: string,
+    gender: GenderEnum
     password: string
 }
 
 
 const Register = () => {
+    const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
     const { register, handleSubmit, formState: { errors } } = useForm<IFormInput>({ resolver: yupResolver(registerSchema) })
     const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+        setIsLoading(true)
         try {
             const { status } = await axiosInstance.post("/register", data)
             if (status === 200 || status === 201) {
@@ -38,6 +50,8 @@ const Register = () => {
                 position: "bottom-center",
                 duration: 2000
             })
+        } finally {
+            setIsLoading(false)
         }
     }
     return (
@@ -52,11 +66,19 @@ const Register = () => {
                 {errors?.email && <InputErrorMessage msg={errors.email.message} />}
             </div>
             <div>
+                <Select {...register("gender")}>
+                    <option value={GenderEnum.male}>Male</option>
+                    <option value={GenderEnum.female}>Female</option>
+                    <option value={GenderEnum.other}>Other</option>
+                </Select>
+                {errors?.gender && <InputErrorMessage msg={errors.gender.message} />}
+            </div>
+            <div>
                 <Input {...register("password")} placeholder="Enter Password" type="password" />
                 {errors?.password && <InputErrorMessage msg={errors.password.message} />}
             </div>
 
-            <Button>Sign up</Button>
+            <Button isLoading={isLoading}>Sign up</Button>
         </form>
     )
 }

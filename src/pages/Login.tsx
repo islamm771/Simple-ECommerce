@@ -9,6 +9,7 @@ import toast from "react-hot-toast"
 import { AxiosError } from "axios"
 import { IAxiosError } from "../interface"
 import { LOGIN_FORM } from "../data"
+import { useState } from "react"
 
 
 interface IFormInput {
@@ -17,8 +18,10 @@ interface IFormInput {
 }
 
 const Login = () => {
+    const [isLoading, setIsLoading] = useState(false)
     const { register, handleSubmit, formState: { errors } } = useForm<IFormInput>({ resolver: yupResolver(loginSchema) })
     const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+        setIsLoading(true)
         try {
             const { status, data: userData } = await axiosInstance.post("/login", data)
             if (status === 200) {
@@ -38,6 +41,9 @@ const Login = () => {
                 duration: 2000
             })
         }
+        finally {
+            setIsLoading(false)
+        }
     }
 
 
@@ -50,10 +56,10 @@ const Login = () => {
 
     return (
         <form className="max-w-md mx-auto space-y-4 my-12" onSubmit={handleSubmit(onSubmit)}>
-            <h2 className="text-[20px] font-semibold text-center mb-6">Login to get acess</h2>
+            <h2 className="text-[20px] font-semibold text-center mb-4">Login to get acess</h2>
             {renderLoginForm}
 
-            <Button>Login</Button>
+            <Button isLoading={isLoading}>Login</Button>
         </form>
     )
 }

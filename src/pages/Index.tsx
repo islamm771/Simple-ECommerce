@@ -13,12 +13,10 @@ const Index = () => {
 
     if (isLoading) return (
         <div className="container">
-            <div role="status" className="animate-pulse">
-                <div className="grid grid-cols-3 gap-4 mt-8">
-                    <ProductSkeleton />
-                    <ProductSkeleton />
-                    <ProductSkeleton />
-                </div>
+            <div role="status" className="animate-pulse grid grid-cols-3 gap-4 mt-8">
+                <ProductSkeleton />
+                <ProductSkeleton />
+                <ProductSkeleton />
             </div>
         </div>
     )
@@ -32,11 +30,17 @@ const Index = () => {
 
     return (
         <div className="container">
-            <div className="grid grid-cols-3 gap-4 mt-8">
-                {data.length ? data.map((product: IProduct) => (
+
+            {data?.length ? <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+                {data.map((product: IProduct) => (
                     <ProductCard product={product} key={product.id} />
-                )) : <div>No products yet!!</div>}
-            </div>
+                ))}
+            </div> : (
+                <div>
+                    <h1 className="text-center text-[30px] mt-8 font-bold">No products yet!!</h1>
+                </div>
+            )}
+
         </div>
     )
 }
