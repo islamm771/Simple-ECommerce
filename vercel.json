@@ -1,0 +1,33 @@
+{
+    "version": 2,
+    "rewrites": [
+        {
+            "source": "/products/:id",
+            "destination": "/index.html"
+        },
+        {
+            "source": "/cart",
+            "destination": "/index.html"
+        },
+        {
+            "source": "/add-product",
+            "destination": "/index.html"
+        },
+        {
+            "source": "/profile",
+            "destination": "/index.html"
+        },
+        {
+            "source": "/login",
+            "destination": "/index.html"
+        },
+        {
+            "source": "/register",
+            "destination": "/index.html"
+        },
+        {
+            "source": "/",
+            "destination": "/index.html"
+        }
+    ]
+}
