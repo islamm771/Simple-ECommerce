@@ -5,11 +5,11 @@ import ProductSkeleton from "../components/ProductSkeleton";
 import ProductCard from "../components/ProductCard";
 import { Button, Modal } from "flowbite-react";
 import { useState } from "react";
+import { getUserData } from "../data";
 
 const Cart = () => {
     const [openModal, setOpenModal] = useState(false);
-    const userDataString = localStorage.getItem("userData")
-    const userData = userDataString ? JSON.parse(userDataString) : null
+    const userData = getUserData()
     const { id: userId } = userData.user;
 
     const { isLoading, error, data } = useAuthenticatedQuery({

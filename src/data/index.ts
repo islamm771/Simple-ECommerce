@@ -46,3 +46,12 @@ export const PRODUCT_FORM: IProductForm[] = [
         type: "number"
     },
 ]
+
+
+
+export const getUserData = () => {
+    const userDataString = localStorage.getItem("userData")
+    const userData = userDataString ? JSON.parse(userDataString) : null
+
+    return userData
+}

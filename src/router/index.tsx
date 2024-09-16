@@ -8,11 +8,9 @@ import Product from "../pages/Product"
 import AddProduct from "../pages/AddProduct"
 import Profile from "../pages/Profile"
 import ProtectedRoute from "../components/ProtectedRoute";
+import { getUserData } from "../data";
 
-// Get user data from local storage
-const userDataString = localStorage.getItem("userData")
-const userData = userDataString ? JSON.parse(userDataString) : null
-
+const userData = getUserData()
 
 export const router = createBrowserRouter(createRoutesFromElements(
     <>

@@ -1,11 +1,11 @@
 import { Dropdown } from "flowbite-react";
-import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { Link, NavLink } from "react-router-dom";
+import { getUserData } from "../data";
 
 const MyNavbar = () => {
-    const userDataString = localStorage.getItem("userData")
-    const userData = userDataString ? JSON.parse(userDataString) : null
+    const userData = getUserData()
+
 
     const onLogout = () => {
         localStorage.removeItem("userData")
@@ -18,9 +18,6 @@ const MyNavbar = () => {
         }, 1200);
     }
 
-    useEffect(() => {
-        // pageYOffset >= 200 ? set
-    }, [])
     return (
         <nav className="bg-indigo-700 sticky top-0 z-10 text-white p-4">
             <div className="container flex">

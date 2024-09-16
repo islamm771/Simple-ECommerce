@@ -1,6 +1,7 @@
+import { getUserData } from "../data"
+
 const Profile = () => {
-    const userDataString = localStorage.getItem("userData")
-    const userData = userDataString ? JSON.parse(userDataString) : null
+    const userData = getUserData()
     const { user } = userData
     return (
         <div className="container">
