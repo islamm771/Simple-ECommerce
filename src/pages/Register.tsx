@@ -55,7 +55,7 @@ const Register = () => {
         }
     }
     return (
-        <form className="max-w-md mx-auto space-y-4 my-12" onSubmit={handleSubmit(onSubmit)}>
+        <form className="max-w-md mx-auto space-y-4 my-12 px-4" onSubmit={handleSubmit(onSubmit)}>
             <h2 className="text-[20px] font-semibold text-center mb-6">Sign up to get acess</h2>
             <div>
                 <Input {...register("username")} placeholder="Enter Username" type="text" />

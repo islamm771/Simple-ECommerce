@@ -20,9 +20,9 @@ const MyNavbar = () => {
 
     return (
         <nav className="bg-indigo-700 sticky top-0 z-10 text-white p-4">
-            <div className="container flex">
+            <div className="container flex flex-col lg:flex-row">
                 <Link className="font-bold text-2xl" to="/" >E-Commerce</Link>
-                <ul className="flex items-center gap-6 ml-auto flex-col md:flex-row">
+                <ul className="flex items-center gap-6 lg:ml-auto flex-row mt-4 lg:mt-0">
                     <li>
                         <NavLink className="text-xl" to="/">Home</NavLink>
                     </li>

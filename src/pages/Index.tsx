@@ -13,7 +13,7 @@ const Index = () => {
 
     if (isLoading) return (
         <div className="container">
-            <div role="status" className="animate-pulse grid grid-cols-3 gap-4 mt-8">
+            <div role="status" className="animate-pulse grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
                 <ProductSkeleton />
                 <ProductSkeleton />
                 <ProductSkeleton />
