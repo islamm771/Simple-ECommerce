@@ -9,41 +9,68 @@ import AddProduct from "../pages/AddProduct"
 import Profile from "../pages/Profile"
 import ProtectedRoute from "../components/ProtectedRoute";
 import { getUserData } from "../data";
+import PageNotFound from "../pages/PageNotFound";
+import DashboardLayout from "../pages/Dashboard/DashboardLayout";
+import Products from "../pages/Dashboard/Products";
+import Users from "../pages/Dashboard/Users";
+import Dashboard from "../pages/Dashboard/Index";
+import Categories from "../pages/Dashboard/Categories";
 
 const userData = getUserData()
 
 export const router = createBrowserRouter(createRoutesFromElements(
     <>
         <Route path="/" element={<RootLayout />}>
-            <Route index element={
-                <ProtectedRoute isAllowed={userData?.accessToken} path="/login">
-                    <Index />
-                </ProtectedRoute>
-            } />
+            <Route index element={<Index />} />
             <Route path="/products/:id" element={<Product />} />
             <Route path="/cart" element={
-                <ProtectedRoute isAllowed={userData?.accessToken} path="/login">
+                <ProtectedRoute isAllowed={userData?.token} path="/login">
                     <Cart />
                 </ProtectedRoute>
             } />
             <Route path="/add-product" element={
-                <ProtectedRoute isAllowed={userData?.accessToken} path="/login">
+                <ProtectedRoute isAllowed={userData?.token} path="/login">
                     <AddProduct />
                 </ProtectedRoute>
             } />
             <Route path="/profile" element={
-                <ProtectedRoute isAllowed={userData?.accessToken} path="/login">
+                <ProtectedRoute isAllowed={userData?.token} path="/login">
                     <Profile />
                 </ProtectedRoute>
             } />
             <Route path="/login" element={
-                <ProtectedRoute isAllowed={!userData?.accessToken} path="/">
+                <ProtectedRoute isAllowed={!userData?.token} path="/">
                     <Login />
                 </ProtectedRoute>
             } />
             <Route path="/register" element={
-                <ProtectedRoute isAllowed={!userData?.accessToken} path="/">
+                <ProtectedRoute isAllowed={!userData?.token} path="/">
                     <Register />
+                </ProtectedRoute>
+            } />
+            <Route path="*" element={<PageNotFound />} />
+
+        </Route>
+
+        <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route index element={
+                <ProtectedRoute isAllowed={userData?.token} path="/login">
+                    <Dashboard />
+                </ProtectedRoute>
+            } />
+            <Route path="users" element={
+                <ProtectedRoute isAllowed={userData?.token} path="/login">
+                    <Users />
+                </ProtectedRoute>
+            } />
+            <Route path="products" element={
+                <ProtectedRoute isAllowed={userData?.token} path="/login">
+                    <Products />
+                </ProtectedRoute>
+            } />
+            <Route path="categories" element={
+                <ProtectedRoute isAllowed={userData?.token} path="/login">
+                    <Categories />
                 </ProtectedRoute>
             } />
         </Route>

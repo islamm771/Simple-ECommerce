@@ -5,10 +5,10 @@ import { router } from "./router"
 
 const App = () => {
   return (
-    <div>
+    <>
       <RouterProvider router={router} />
       <Toaster />
-    </div>
+    </>
   )
 }
 

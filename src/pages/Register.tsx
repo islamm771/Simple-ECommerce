@@ -7,22 +7,16 @@ import { registerSchema } from "../validation"
 import { yupResolver } from "@hookform/resolvers/yup"
 import toast from "react-hot-toast"
 import { AxiosError } from "axios"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { IAxiosError } from "../interface"
-import Select from "../components/ui/select"
 import { useState } from "react"
+import { FcGoogle } from "react-icons/fc";
 
-
-enum GenderEnum {
-    female = "female",
-    male = "male",
-    other = "other",
-}
 
 interface IFormInput {
     username: string,
     email: string,
-    gender: GenderEnum
+    gender: string
     password: string
 }
 
@@ -55,31 +49,67 @@ const Register = () => {
         }
     }
     return (
-        <form className="max-w-md mx-auto space-y-4 my-12 px-4" onSubmit={handleSubmit(onSubmit)}>
-            <h2 className="text-[20px] font-semibold text-center mb-6">Sign up to get acess</h2>
+        <div className="flex">
             <div>
-                <Input {...register("username")} placeholder="Enter Username" type="text" />
-                {errors?.username && <InputErrorMessage msg={errors.username.message} />}
+                <img className="w-[600px]" src="/imgs/side-img.png" alt="" />
             </div>
-            <div>
-                <Input {...register("email")} placeholder="Enter Email" type="email" />
-                {errors?.email && <InputErrorMessage msg={errors.email.message} />}
-            </div>
-            <div>
-                <Select {...register("gender")}>
-                    <option value={GenderEnum.male}>Male</option>
-                    <option value={GenderEnum.female}>Female</option>
-                    <option value={GenderEnum.other}>Other</option>
-                </Select>
-                {errors?.gender && <InputErrorMessage msg={errors.gender.message} />}
-            </div>
-            <div>
-                <Input {...register("password")} placeholder="Enter Password" type="password" />
-                {errors?.password && <InputErrorMessage msg={errors.password.message} />}
-            </div>
+            <div className="flex-1 flex justify-center py-14 px-12">
+                <form className="w-[400px] space-y-4" onSubmit={handleSubmit(onSubmit)}>
+                    <div className="!mb-8">
+                        <h2 className="text-[20px] font-semibold mb-2">Create an account</h2>
+                        <p className="">Enter your details below</p>
+                    </div>
+                    <div>
+                        <Input {...register("username")} placeholder="Enter Username" type="text" />
+                        {errors?.username && <InputErrorMessage msg={errors.username.message} />}
+                    </div>
+                    <div>
+                        <Input {...register("email")} placeholder="Enter Email" type="email" />
+                        {errors?.email && <InputErrorMessage msg={errors.email.message} />}
+                    </div>
+                    <div className="text-gray-600 space-x-4">
+                        <label className="mr-2" htmlFor="">Gender:</label>
+                        <label className="inline-flex items-center gap-2" htmlFor="male-option">
+                            <input
+                                type="radio"
+                                id="male-option"
+                                value="male"
+                                className="focus:ring-0"
+                                {...register("gender")}
+                            />
+                            Male
+                        </label>
+                        <label className="inline-flex items-center gap-2" htmlFor="female-option">
+                            <input
+                                type="radio"
+                                id="female-option"
+                                value="female"
+                                className="focus:ring-0"
+                                {...register("gender")}
+                            />
+                            Female
+                        </label>
 
-            <Button isLoading={isLoading}>Sign up</Button>
-        </form>
+                        {errors?.gender && <InputErrorMessage msg={errors.gender.message} />}
+                    </div>
+                    <div>
+                        <Input {...register("password")} placeholder="Enter Password" type="password" />
+                        {errors?.password && <InputErrorMessage msg={errors.password.message} />}
+                    </div>
+
+                    <div>
+                        <Button width="w-full" isLoading={isLoading}>Sign up</Button>
+                        <button
+                            className={`mt-3 border border-black w-full px-4 py-[14px] text-sm flex items-center justify-center gap-2 rounded-sm font-medium`}
+                        >
+                            <FcGoogle size={20} /> Sign up with Google
+                        </button>
+                    </div>
+
+                    <p className="text-center text-gray-600">Already have an account? <Link className="text-gray-800 font-medium border-b-2 border-gray-600" to="/login">Login</Link></p>
+                </form>
+            </div>
+        </div>
     )
 }
 

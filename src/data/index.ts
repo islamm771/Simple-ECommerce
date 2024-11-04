@@ -18,7 +18,7 @@ export const PRODUCT_FORM: IProductForm[] = [
     {
         name: "title",
         placeholder: "Enter Product Name",
-        type: "text"
+        type: "text",
     },
     {
         name: "description",
@@ -28,16 +28,6 @@ export const PRODUCT_FORM: IProductForm[] = [
     {
         name: "price",
         placeholder: "Enter Product Price",
-        type: "number"
-    },
-    {
-        name: "category",
-        placeholder: "Enter Product Category",
-        type: "text"
-    },
-    {
-        name: "rate",
-        placeholder: "Enter Product Rating",
         type: "number"
     },
     {

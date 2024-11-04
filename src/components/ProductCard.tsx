@@ -1,105 +1,84 @@
-import { FaStar } from "react-icons/fa"
-import { IProduct } from "../interface"
-import { TextSpliter, TitleSpliter } from "../utility"
-import { IoIosPricetag } from "react-icons/io"
-import { axiosInstance } from "../config/axios.config"
+import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
+import { useAddToCartMutation } from "../app/features/CartSlice"
+import { IProduct } from "../interface"
+import { getUserData } from "../data"
+import { FaRegHeart, FaStar } from 'react-icons/fa';
+import { MdOutlineRemoveRedEye } from "react-icons/md"
+import { RiShoppingCart2Line } from "react-icons/ri"
 import { Link } from "react-router-dom"
+
 
 interface IProps {
     product: IProduct,
-    qunatity?: number
+    isSale?: boolean
 }
 
-const ProductCard = ({ product, qunatity }: IProps) => {
-    const userDataString = localStorage.getItem("userData")
-    const userData = userDataString ? JSON.parse(userDataString) : null
-    const { id: userId } = userData.user;
+const ProductCard = ({ product, isSale }: IProps) => {
+    const [isCardHovered, setIsCardHovered] = useState(false)
+    const userData = getUserData();
+    const [addToCart, { isSuccess: isAddingSuccess }] = useAddToCartMutation();
 
     const handleAddToCart = async (productId: number) => {
-        try {
-            const { status } = await axiosInstance.post("/cart/add", {
-                userId,
-                productId,
-                quantity: 1
-            }, {
-                headers: {
-                    'Authorization': `Bearer ${userData.token}`
-                }
+        if (!userData) {
+            toast.error('Please log in to add products to cart', {
+                position: "top-right",
+                duration: 2000
             })
-            if (status === 200 || status === 201) {
-                toast.success('Product is added to card', {
-                    position: "top-right",
-                    duration: 2000
-                })
-            }
+            return;
+        }
+        const { id: userId } = userData.user;
+        try {
+            addToCart({
+                userId,
+                products: [{ productId, quantity: 1 }]
+            })
         } catch (error) {
             console.log(error)
         }
     }
 
-    const handleRemoveFromCart = async (productId: number) => {
-        try {
-            console.log(userId, productId)
-            const { status } = await axiosInstance.post("/cart/remove", {
-                userId,
-                productId,
-            }, {
-                headers: {
-                    'Authorization': `Bearer ${userData.token}`
-                }
+    useEffect(() => {
+        if (isAddingSuccess) {
+            toast.success('Product is added to card', {
+                position: "top-right",
+                duration: 2000
             })
-            if (status === 200 || status === 201) {
-                toast.success('Product is removed from card', {
-                    position: "top-right",
-                    duration: 1000
-                })
-                setTimeout(() => {
-                    location.reload();
-                }, 500);
-            }
-        } catch (error) {
-            console.log(error)
         }
-    }
+    }, [isAddingSuccess]);
 
-    return <div className="product-card shadow-md p-4 rounded-lg space-y-4 relative">
-        <h3 className="font-bold text-[20px]">
-            <Link to={`/products/${product.id}`}>{TitleSpliter(product.title)}</Link>
-        </h3>
-        {qunatity && (
-            <span className="bg-blue-100 text-blue-800 text-xs font-semibold w-8 h-8 flex items-center justify-center rounded-full absolute top-0 right-2">
-                {product.quantity}
-            </span>
-        )}
-        <div className="rating flex items-center gap-6">
-            <span className="flex">
-                {Array.from({ length: 5 }).map((_, idx) => (
-                    <FaStar
-                        className={`${Math.round(product.rating.rate) > idx ? "text-yellow-300" : "text-gray-400"}`}
-                        key={idx}
-                    />
-                ))}
-            </span>
-            <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">{product.rating.rate}</span>
-        </div>
-        <p> {TextSpliter(product.description)} </p>
-        <ul className="flex items-center justify-between font-semibold space-x-3">
-            <li className="flex items-center gap-1"><IoIosPricetag /> {product.category}</li>
-            {/* <li>{product.rating.count}</li> */}
-            <li className="text-[22px]">{product.price}$</li>
-        </ul>
-        {!qunatity ? (
-            <button className="bg-indigo-600 text-white p-2 rounded-md w-full !mt-8"
-                onClick={() => handleAddToCart(product.id)}
-            >Add to cart</button>
-        ) : (
-            <button className="bg-red-600 text-white p-2 rounded-md w-full !mt-8"
-                onClick={() => { handleRemoveFromCart(product.id) }}>
-                Remove from cart
-            </button>
-        )}
-    </div>
+    return (
+        <div onMouseEnter={() => setIsCardHovered(prev => !prev)} onMouseLeave={() => setIsCardHovered(prev => !prev)}>
+            <div className='bg-gray-100 relative p-3 rounded-md overflow-hidden'>
+                {isSale && (
+                    <span className='bg-red-600 text-white text-center w-11 py-1 block rounded-md text-xs absolute top-1 left-1 z-10'> -40% </span>
+                )}
+                <Link to={`/products/${product.id}`} className='block font-semibold'>
+                    <img className="w-full h-52 object-cover transition-transform duration-500 hover:scale-110" src={product.image} alt={product.title} />
+                </Link>
+                <ul className='space-y-1 absolute top-1 right-1'>
+                    <li className='bg-white w-6 h-6 rounded-full flex items-center justify-center cursor-pointer'><FaRegHeart /></li>
+                    <li className='bg-white w-6 h-6 rounded-full flex items-center justify-center cursor-pointer'><MdOutlineRemoveRedEye /></li>
+                </ul>
+                <button
+                    className={`w-full bg-black text-white text-sm flex items-center gap-1 justify-center absolute ${isCardHovered ? 'bottom-0' : '-bottom-full'} left-0 rounded-b-md py-1.5 transition-[bottom] ease-linear duration-500`}
+                    onClick={() => handleAddToCart(product.id)}>
+                    <RiShoppingCart2Line />
+                    Add To Cart
+                </button>
+            </div>
+            <div className="mt-3 space-y-1">
+                <Link to={`/products/${product.id}`} className='block font-semibold'>{product.title}</Link>
+                <span className='text-red-600'>${product.price}</span>
+                {isSale && <span className='text-gray-600 line-through ml-2'>${product.price + 80}</span>}
+                <span className={`${isSale ? "flex" : "inline-flex ml-2 my-0"}`}>
+                    {Array.from({ length: 5 }).map((_, idx) => (
+                        <FaStar key={idx} color={idx + 1 < 3 ? "gold" : "gray"} />
+                    ))}
+                </span>
+            </div>
+        </div >
+    )
 }
 
 

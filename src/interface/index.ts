@@ -16,18 +16,40 @@ export interface IAxiosError {
 export interface IProduct {
     id: number,
     title: string,
+    image: string
     quantity: number | 0,
     description: string,
     price: number,
     category: string,
-    rating: {
-        rate: number,
-        count: number
-    }
+    count: number,
+    rate: 0
+}
+
+
+export interface IAddProduct {
+    title: string,
+    price: number,
+    description: string,
+    category: string,
+    count: number
 }
 
 export interface IProductForm {
-    name: "title" | "description" | "price" | "category" | "rate" | "count",
+    name: "title" | "description" | "price" | "count",
     type: string,
     placeholder: string,
+}
+
+export interface ICategory {
+    id: number,
+    name: string,
+}
+
+
+export interface IUser {
+    id: number;
+    username: string
+    email: string,
+    password: string,
+    gender: string,
 }

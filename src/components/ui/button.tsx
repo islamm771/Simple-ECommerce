@@ -3,13 +3,16 @@ import { ButtonHTMLAttributes, ReactNode } from "react"
 interface IProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     children: ReactNode,
     isLoading?: boolean,
+    centered?: boolean,
+    width: "w-fit" | "w-full"
 }
 
-const Button = ({ children, isLoading }: IProps) => {
+const Button = ({ width = "w-fit", children, centered, isLoading, ...rest }: IProps) => {
     return (
         <button
-            className="flex items-center justify-center rounded-md font-medium text-white duration-300 disabled:bg-indigo-400 disabled:hover:bg-indigo-400 disabled:cursor-not-allowed bg-indigo-600 dark:bg-indigo-600 dark:text-white dark:hover:bg-indigo-700 p-3 w-full"
+            className={`bg-[#DB4444] ${width} px-4 py-[14px] text-sm flex items-center justify-center ${centered ? 'mx-auto' : ''} rounded-[4px] font-medium text-white duration-300 disabled:opacity-50 disabled:cursor-not-allowed`}
             disabled={isLoading}
+            {...rest}
         >
             {isLoading && (
                 <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

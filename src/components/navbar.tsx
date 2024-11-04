@@ -1,74 +1,111 @@
-import { Dropdown } from "flowbite-react";
-import toast from "react-hot-toast";
+import { useEffect, useRef, useState } from "react";
+import { FaRegHeart, FaSearch } from "react-icons/fa";
+import { RiShoppingCart2Line } from "react-icons/ri";
 import { Link, NavLink } from "react-router-dom";
+import { useGetCartQuery } from "../app/features/CartSlice";
 import { getUserData } from "../data";
-
+import NavbarDropDown from "./NavbarDropDown";
 const MyNavbar = () => {
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const userData = getUserData()
+    const menuRef = useRef<HTMLUListElement>(null)
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
 
+    const { data } = useGetCartQuery({ userId: userData?.user.id })
 
-    const onLogout = () => {
-        localStorage.removeItem("userData")
-        toast.success(`Logout successful`, {
-            position: "bottom-center",
-            duration: 1000
-        });
-        setTimeout(() => {
-            location.reload();
-        }, 1200);
+    const handleMenuToggle = () => {
+        setIsMenuOpen(prev => !prev)
     }
 
+    // Handle window resize
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+
+            // Optionally close the menu on resize if the width exceeds a breakpoint
+            if (window.innerWidth >= 1024) {
+                setIsMenuOpen(false);
+            }
+        };
+
+        window.addEventListener("resize", handleResize);
+
+        // Cleanup on unmount
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
     return (
-        <nav className="bg-indigo-700 sticky top-0 z-10 text-white p-4">
-            <div className="container flex flex-col lg:flex-row">
-                <Link className="font-bold text-2xl" to="/" >E-Commerce</Link>
-                <ul className="flex items-center gap-6 lg:ml-auto flex-row mt-4 lg:mt-0">
-                    <li>
-                        <NavLink className="text-xl" to="/">Home</NavLink>
-                    </li>
-                    {
-                        !userData ? (
+        <nav className="bg-white sticky top-0 z-10 p-4 lg:p-2 border border-solid border-gray-300">
+            <div className="container flex lg:items-center flex-wrap">
+                <Link className="font-bold text-[20px] block" to="/" >E-Commerce</Link>
+                <button className="lg:hidden flex flex-col gap-1 ml-auto items-center justify-center"
+                    onClick={handleMenuToggle}>
+                    <span className={`bg-black rounded-sm w-8 h-1 block ${isMenuOpen ? "rotate-45" : "rotate-0"}`}></span>
+                    <span className={`bg-black rounded-sm w-8 h-1 ${isMenuOpen ? "hidden" : "block"}`}></span>
+                    <span className={`bg-black rounded-sm w-8 h-1 block ${isMenuOpen ? "-rotate-45 -mt-[7px]" : "rotate-0"}`}></span>
+                </button>
+                <div
+                    className={`link-collapse flex-grow flex flex-col lg:flex-row justify-between lg:justify-start w-full lg:w-fit overflow-hidden lg:overflow-visible transition-[height] ease-linear duration-500`}
+                    style={{
+                        height: windowWidth < 1024 ? isMenuOpen ? `${320}px` : '0px' : 'auto',
+                    }}>
+                    <ul className="flex flex-col lg:flex-row lg:items-center leading-none lg:mx-auto lg:gap-5" ref={menuRef}>
+                        <li className="p-2">
+                            <NavLink className="text-sm" to="/">Home</NavLink>
+                        </li>
+                        <li className="p-2">
+                            <NavLink className="text-sm" to="/contact">Contact</NavLink>
+                        </li>
+                        <li className="p-2">
+                            <NavLink className="text-sm" to="/about">About</NavLink>
+                        </li>
+                        <li className="p-2">
+                            <NavLink className="text-sm" to="/dashboard">Dashboard</NavLink>
+                        </li>
+                        {!userData && (
                             <>
-                                <li>
-                                    <NavLink className="text-xl" to="/register">Register</NavLink>
+                                <li className="p-2">
+                                    <NavLink className="text-sm" to="/register">Register</NavLink>
                                 </li>
-                                <li>
-                                    <NavLink className="text-xl" to="/login">Login</NavLink>
+                                <li className="p-2">
+                                    <NavLink className="text-sm" to="/login">Login</NavLink>
                                 </li>
                             </>
-                        )
-                            : <>
-                                <li>
-                                    <NavLink className="text-xl" to="/cart">Cart</NavLink>
-                                </li>
-
-                                <li className="drop-down-wrapper">
-                                    <Dropdown className="" label={`Welcome, ${userData.user.username}`} dismissOnClick={false}>
-                                        <Dropdown.Item>
-                                            <Link className="block flex-1 text-start" to="/profile">Profile</Link>
-                                        </Dropdown.Item>
-                                        <Dropdown.Item>
-                                            <Link className="block flex-1 text-start" to="/add-product">Add Product</Link>
-                                        </Dropdown.Item>
-                                        <Dropdown.Item onClick={onLogout}>
-                                            Logout
-                                        </Dropdown.Item>
-                                    </Dropdown>
-                                </li>
-
-                                {/* <button className="bg-white/20 text-[18px] leading-none py-[10px] px-[12px] rounded-md"
-                                    onClick={onLogout}>
-                                    Logout
-                                </button>
-                                <li>
-                                    <span className="text-xl">Welcome, <b className="capitalize">{userData.user.username}</b></span>
-                                </li> */}
+                        )}
+                    </ul>
+                    <div className="flex gap-4 items-center flex-wrap lg:flex-nowrap p-1">
+                        <form className="w-full lg:w-64">
+                            <div className="relative">
+                                <input className="bg-gray-100 border-none p-2 pl-4 pr-9 w-full text-sm rounded-md focus:outline-none focus:ring-0"
+                                    type="text"
+                                    placeholder="What are you looking for?" />
+                                <FaSearch size={14} className="absolute top-[11px] right-3 text-gray-700" />
+                            </div>
+                        </form>
+                        {userData && (
+                            <>
+                                <Link to={"#"}>
+                                    <FaRegHeart />
+                                </Link>
+                                <Link to={"/cart"} className="relative">
+                                    <RiShoppingCart2Line size={18} />
+                                    <span className="w-4 h-4 flex items-center justify-center rounded-full text-[10px] text-white bg-red-700 absolute -top-2 -right-2">
+                                        {data?.cart.length || 0}
+                                    </span>
+                                </Link>
+                                <NavbarDropDown user={userData} />
                             </>
-                    }
-                </ul>
+                        )}
+                    </div>
+                </div>
             </div>
         </nav>
     )
 }
 
 export default MyNavbar
+
+
+
+
+// menuRef.current?.scrollHeight

@@ -3,16 +3,24 @@
 @tailwind utilities;
 
 
+body {
+    font-family: "Poppins", sans-serif;
+}
+
+
 nav a.active {
-    font-weight: 700;
+    border-bottom: 1px solid #000;
 }
 
-nav li.drop-down-wrapper>button,
-nav li.drop-down-wrapper>button:hover {
-    background-color: rgba(255, 255, 255, 0.2) !important;
+aside a.active {
+    background-color: #d1d5db;
 }
 
-nav li.drop-down-wrapper>button:focus {
-    box-shadow: none;
-    outline: unset;
+.hero-swiper .swiper-pagination-bullet {
+    background-color: gray;
+    opacity: 1;
+}
+
+.hero-swiper .swiper-pagination-bullet.swiper-pagination-bullet-active {
+    background-color: #c81e1e;
 }

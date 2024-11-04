@@ -10,6 +10,7 @@ import { AxiosError } from "axios"
 import { IAxiosError } from "../interface"
 import { LOGIN_FORM } from "../data"
 import { useState } from "react"
+import { Link } from "react-router-dom"
 
 
 interface IFormInput {
@@ -36,7 +37,7 @@ const Login = () => {
             }
         } catch (error) {
             const objectError = error as AxiosError<IAxiosError>
-            toast.error(`${objectError.response?.data}`, {
+            toast.error(`${objectError.response?.data.error}`, {
                 position: "bottom-center",
                 duration: 2000
             })
@@ -55,12 +56,24 @@ const Login = () => {
     ))
 
     return (
-        <form className="max-w-md mx-auto space-y-4 my-12 px-4" onSubmit={handleSubmit(onSubmit)}>
-            <h2 className="text-[20px] font-semibold text-center mb-4">Login to get acess</h2>
-            {renderLoginForm}
+        <div className="flex">
+            <div>
+                <img className="w-[600px]" src="/imgs/side-img.png" alt="" />
+            </div>
+            <div className="flex-1 flex justify-center py-28 px-12">
+                <form className="w-[400px] space-y-4" onSubmit={handleSubmit(onSubmit)}>
+                    <div className="!mb-8">
+                        <h2 className="text-[20px] font-semibold mb-2">Log in to Exclusive</h2>
+                        <p className="">Enter your details below</p>
+                    </div>
+                    {renderLoginForm}
 
-            <Button isLoading={isLoading}>Login</Button>
-        </form>
+                    <Button width="w-full" isLoading={isLoading}>Login</Button>
+                    <p className="text-center text-gray-600">Don't have an account ? <Link className="text-gray-800 font-medium border-b-2 border-gray-600" to="/register">Sign up</Link></p>
+
+                </form>
+            </div>
+        </div>
     )
 }
 

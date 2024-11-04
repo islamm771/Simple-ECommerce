@@ -1,113 +1,179 @@
-import { useParams } from 'react-router-dom'
-import useAuthenticatedQuery from '../hooks/useAuthenticatedQuery'
-import { IProduct } from '../interface'
-import { axiosInstance } from '../config/axios.config'
-import toast from 'react-hot-toast'
-import { FaTimes } from 'react-icons/fa'
+import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import { FaMinus, FaPlus, FaRegHeart, FaStar, FaTimes } from 'react-icons/fa';
+import { FaTruckFast } from "react-icons/fa6";
+import { TfiReload } from "react-icons/tfi";
+import { useParams } from 'react-router-dom';
+import { useAddToCartMutation } from '../app/features/CartSlice';
+import { useGetProductByIdQuery, useGetRelatedProductsQuery } from '../app/features/ProductsSlice';
+import PathElement from '../components/PathElement';
+import ProductCard from '../components/ProductCard';
+import Button from '../components/ui/button';
+import Wrapper from '../components/ui/Wrapper';
+import { IProduct } from '../interface';
+import { AxiosError } from 'axios';
 
 const Product = () => {
     const { id } = useParams()
-
+    const [quantity, setQuantity] = useState(1)
     const userDataString = localStorage.getItem("userData")
     const userData = userDataString ? JSON.parse(userDataString) : null
     const { id: userId } = userData.user;
+    const [addToCart, { isSuccess: isAddingSuccess }] = useAddToCartMutation();
+
+    const { isLoading, error, data } = useGetProductByIdQuery({ id: id || '' })
+
+    const productData = data as IProduct;
+    const { data: relatedProducts } = useGetRelatedProductsQuery({ id: id || '' })
 
     const handleAddToCart = async (productId: number) => {
         try {
-            const { status } = await axiosInstance.post("/cart/add", {
+            addToCart({
                 userId,
-                productId,
-                quantity: 1
-            }, {
-                headers: {
-                    'Authorization': `Bearer ${userData.token}`
-                }
+                products: [{ productId, quantity }]
             })
-            if (status === 200 || status === 201) {
-                toast.success('Product is added to card', {
-                    position: "top-right",
-                    duration: 2000
-                })
-            }
-        } catch (error) {
-            console.log(error)
+        } catch (err) {
+            console.log("Failed to add product to cart:", err);
+            toast.error("Failed to add product to cart");
         }
     }
 
-    const { isLoading, error, data } = useAuthenticatedQuery({
-        queryKey: ['product', `${id ? id : ''}`],
-        url: `/products/${id}`,
-    })
+    useEffect(() => {
+        if (isAddingSuccess) {
+            toast.success('Product is added to card', {
+                position: "top-right",
+                duration: 2000
+            })
+        }
+    }, [isAddingSuccess]);
 
     if (isLoading) return <p>Loading...</p>
 
-    if (error) return <div className='container'> {error.message} </div>
-
-    const productData = data as IProduct;
+    if (error) {
+        const errorObj = error as AxiosError
+        return <div className='container'> {errorObj.message} </div>
+    }
 
     return (
-        <div className="container">
-            <div className="mt-16">
-                <div className="flex flex-col md:flex-row -mx-4">
-                    <div className="md:flex-1 px-4">
-                        <div className="h-[460px] rounded-lg bg-gray-300 dark:bg-gray-700 mb-4">
-                            <img className="w-full h-full object-cover" src="https://cdn.pixabay.com/photo/2020/05/22/17/53/mockup-5206355_960_720.jpg" alt="Product Image" />
+        <>
+            <div className="container">
+                <PathElement pathes={`${productData.category} / `} indexPath={productData.title} />
+                <div className="mt-16">
+                    <div className="flex flex-col md:flex-row -mx-4">
+                        <div className="md:flex-1 px-4 flex gap-4">
+                            <ul className='h-[460px] grid gap-4'>
+                                <li>
+                                    <img className="size-[100px] object-cover rounded-md border border-solid border-gray-300"
+                                        src={productData.image ? productData.image : "https://cdn.pixabay.com/photo/2020/05/22/17/53/mockup-5206355_960_720.jpg"}
+                                        alt="Product Image" />
+                                </li>
+                                <li>
+                                    <img className="size-[100px] object-cover rounded-md border border-solid border-gray-300"
+                                        src={productData.image ? productData.image : "https://cdn.pixabay.com/photo/2020/05/22/17/53/mockup-5206355_960_720.jpg"}
+                                        alt="Product Image" />
+                                </li>
+                                <li>
+                                    <img className="size-[100px] object-cover rounded-md border border-solid border-gray-300"
+                                        src={productData.image ? productData.image : "https://cdn.pixabay.com/photo/2020/05/22/17/53/mockup-5206355_960_720.jpg"}
+                                        alt="Product Image" />
+                                </li>
+                                <li>
+                                    <img className="size-[100px] object-cover rounded-md border border-solid border-gray-300"
+                                        src={productData.image ? productData.image : "https://cdn.pixabay.com/photo/2020/05/22/17/53/mockup-5206355_960_720.jpg"}
+                                        alt="Product Image" />
+                                </li>
+                            </ul>
+                            <div className="h-[460px] rounded-md mb-4 flex-1">
+                                <img className="w-full h-full object-cover rounded-md border border-solid border-gray-300"
+                                    src={productData.image ? productData.image : "https://cdn.pixabay.com/photo/2020/05/22/17/53/mockup-5206355_960_720.jpg"}
+                                    alt="Product Image" />
+                            </div>
+
                         </div>
-                        <div className="flex -mx-2 mb-4">
-                            <div className="w-1/2 px-2">
-                                <button className="w-full bg-indigo-600 dark:bg-indigo-400 text-white py-2 px-4 rounded-full font-bold hover:bg-indigo-700 dark:hover:bg-indigo-700"
-                                    onClick={() => handleAddToCart(productData.id)}>Add to Cart</button>
+                        <div className="max-w-[420px] px-4">
+                            <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">{productData.title}</h2>
+                            <div className='flex items-center gap-4 mb-2'>
+                                <span className={"flex"}>
+                                    {Array.from({ length: 5 }).map((_, idx) => (
+                                        <FaStar key={idx} color={idx + 1 < 3 ? "gold" : "gray"} />
+                                    ))}
+                                </span>
+                                <p className='text-gray-400'>(150 Reviews)</p>
+                                <p className='text-green-400 border-l border-solid border-gray-400 pl-4'>In Stock</p>
                             </div>
-                            <div className="w-1/2 px-2">
-                                <button className="w-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-2 px-4 rounded-full font-bold hover:bg-gray-300 dark:hover:bg-gray-600">Add to Wishlist</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="md:flex-1 px-4">
-                        <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">{productData.title}</h2>
-                        <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sed
-                            ante justo. Integer euismod libero id mauris malesuada tincidunt.
-                        </p>
-                        <div className="flex mb-4">
-                            <div className="mr-4">
-                                <span className="font-bold text-gray-700 dark:text-gray-300">Price: </span>
-                                <span className="text-gray-600 dark:text-gray-300">${productData.price}</span>
-                            </div>
-                            <div>
-                                <span className="font-bold text-gray-700 dark:text-gray-300">Category: </span>
-                                <span className="text-gray-600 dark:text-gray-300">{productData.category}</span>
-                            </div>
-                        </div>
-                        <div className="mb-4">
-                            <span className="font-bold text-gray-700 dark:text-gray-300">Select Color:</span>
-                            <div className="flex items-center mt-2">
-                                <button className="w-6 h-6 rounded-full bg-gray-800 dark:bg-gray-200 mr-2 flex items-center justify-center"><FaTimes size={14} color='white' /></button>
-                                <button className="w-6 h-6 rounded-full bg-red-500 dark:bg-red-700 mr-2"></button>
-                                <button className="w-6 h-6 rounded-full bg-blue-500 dark:bg-blue-700 mr-2"></button>
-                                <button className="w-6 h-6 rounded-full bg-yellow-500 dark:bg-yellow-700 mr-2"></button>
-                            </div>
-                        </div>
-                        <div className="mb-4">
-                            <span className="font-bold text-gray-700 dark:text-gray-300">Select Size:</span>
-                            <div className="flex items-center mt-2">
-                                <button className="bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-white py-2 px-4 rounded-full font-bold mr-2 hover:bg-gray-400 dark:hover:bg-gray-600">S</button>
-                                <button className="bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-white py-2 px-4 rounded-full font-bold mr-2 hover:bg-gray-400 dark:hover:bg-gray-600">M</button>
-                                <button className="bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-white py-2 px-4 rounded-full font-bold mr-2 hover:bg-gray-400 dark:hover:bg-gray-600">L</button>
-                                <button className="bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-white py-2 px-4 rounded-full font-bold mr-2 hover:bg-gray-400 dark:hover:bg-gray-600">XL</button>
-                                <button className="bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-white py-2 px-4 rounded-full font-bold mr-2 hover:bg-gray-400 dark:hover:bg-gray-600">XXL</button>
-                            </div>
-                        </div>
-                        <div>
-                            <span className="font-bold text-gray-700 dark:text-gray-300">Product Description:</span>
-                            <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">
+                            <p className="text-2xl mb-4 price">
+                                ${productData.price}
+                            </p>
+                            <p className="text-black text-sm mb-4 description">
                                 {productData.description}
                             </p>
+                            <hr className='mb-4' />
+                            <div className="flex items-center gap-4 mb-4 color">
+                                <span className="">Colors:</span>
+                                <div className="flex items-center">
+                                    <button className="w-4 h-4 rounded-full bg-gray-800 dark:bg-gray-200 mr-2 flex items-center justify-center"><FaTimes size={10} color='white' /></button>
+                                    <button className="w-4 h-4 rounded-full bg-red-500 dark:bg-red-700 mr-2"></button>
+                                    <button className="w-4 h-4 rounded-full bg-blue-500 dark:bg-blue-700 mr-2"></button>
+                                    <button className="w-4 h-4 rounded-full bg-yellow-500 dark:bg-yellow-700 mr-2"></button>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-4 mb-4 size">
+                                <span className="">Size:</span>
+                                <div className="flex items-center gap-2">
+                                    <button className="py-0 px-2 rounded-sm border border-solid border-black hover:bg-red-600 hover:text-white hover:border-red-600">S</button>
+                                    <button className="py-0 px-2 rounded-sm border border-solid border-black hover:bg-red-600 hover:text-white hover:border-red-600">M</button>
+                                    <button className="py-0 px-2 rounded-sm border border-solid border-black hover:bg-red-600 hover:text-white hover:border-red-600">L</button>
+                                    <button className="py-0 px-2 rounded-sm border border-solid border-black hover:bg-red-600 hover:text-white hover:border-red-600">XL</button>
+                                    <button className="py-0 px-2 rounded-sm border border-solid border-black hover:bg-red-600 hover:text-white hover:border-red-600">XXL</button>
+                                </div>
+                            </div>
+                            <div className='flex gap-3 buy'>
+                                <div className="flex">
+                                    <button className='px-5 border border-solid border-gray-300 rounded-l-[4px] disabled:opacity-50 disabled:cursor-not-allowed' disabled={quantity == 1} onClick={() => setQuantity(prev => prev - 1)}><FaMinus /></button>
+                                    <span className='px-5 py-1 border boder-solid border-gray-300 flex items-center'>{quantity}</span>
+                                    <button className='px-5 bg-red-600 text-white rounded-r-[4px] disabled:opacity-50 disabled:cursor-not-allowed' disabled={quantity == productData.count} onClick={() => setQuantity(prev => prev + 1)}><FaPlus /></button>
+                                </div>
+                                <Button width='w-fit' onClick={() => handleAddToCart(productData.id)}>
+                                    Buy now
+                                </Button>
+                                <span className='px-3 flex items-center justify-center border border-solid border-gray-300 rounded-[4px] cursor-pointer'>
+                                    <FaRegHeart />
+                                </span>
+                            </div>
+                            <ul className="border border-solid border-gray-300 rounded-sm mt-8 divide-y divide-gray-300 tags">
+                                <li className='flex items-center gap-3 p-3'>
+                                    <FaTruckFast size={25} />
+                                    <div>
+                                        <h5 className='font-semibold'>Free Delivery</h5>
+                                        <p className='text-xs underline'>Enter your postal code for Delivery Availability</p>
+                                    </div>
+                                </li>
+                                <li className='flex items-center gap-3 p-3'>
+                                    <TfiReload size={20} />
+                                    <div>
+                                        <h5 className='font-semibold'>Return Delivery</h5>
+                                        <p className='text-xs'>Free 30 Days Delivery Returns. Details</p>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <Wrapper title='Related Items'>
+                {relatedProducts && relatedProducts?.length > 0 ? (
+                    <div className="grid grid-cols-4 mt-8">
+                        {relatedProducts.map(relatedProduct => (<ProductCard product={relatedProduct} key={relatedProduct.id} />)
+                        )}
+                    </div>
+                ) :
+                    <div className="mt-8">
+                        <p className="text-gray-500">No related items yet.</p>
+                    </div>
+                }
+            </Wrapper>
+
+        </>
 
     )
 }
