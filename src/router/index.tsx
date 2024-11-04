@@ -5,7 +5,6 @@ import Register from "../pages/Register"
 import Index from "../pages/Index"
 import Cart from "../pages/Cart"
 import Product from "../pages/Product"
-import AddProduct from "../pages/AddProduct"
 import Profile from "../pages/Profile"
 import ProtectedRoute from "../components/ProtectedRoute";
 import { getUserData } from "../data";
@@ -26,11 +25,6 @@ export const router = createBrowserRouter(createRoutesFromElements(
             <Route path="/cart" element={
                 <ProtectedRoute isAllowed={userData?.token} path="/login">
                     <Cart />
-                </ProtectedRoute>
-            } />
-            <Route path="/add-product" element={
-                <ProtectedRoute isAllowed={userData?.token} path="/login">
-                    <AddProduct />
                 </ProtectedRoute>
             } />
             <Route path="/profile" element={
