@@ -41,8 +41,8 @@ const Categories = () => {
                     spaceBetween={30}
                     pagination={true}
                     breakpoints={{
-                        400: { slidesPerView: 2 },
-                        768: { slidesPerView: 3 },
+                        330: { slidesPerView: 2 },
+                        545: { slidesPerView: 3 },
                         1024: { slidesPerView: 4 },
                     }}
                 />

@@ -59,9 +59,9 @@ const Product = () => {
             <div className="container">
                 <PathElement pathes={`${productData.category} / `} indexPath={productData.title} />
                 <div className="mt-16">
-                    <div className="flex flex-col md:flex-row -mx-4">
-                        <div className="md:flex-1 px-4 flex gap-4">
-                            <ul className='h-[460px] grid gap-4'>
+                    <div className="flex flex-col lg:flex-row gap-y-8 -mx-4">
+                        <div className="md:flex-1 px-4 flex flex-col-reverse md:flex-row gap-4">
+                            <ul className='h-auto md:h-[460px] flex md:flex-col gap-4'>
                                 <li>
                                     <img className="size-[100px] object-cover rounded-md border border-solid border-gray-300"
                                         src={productData.image ? productData.image : "https://cdn.pixabay.com/photo/2020/05/22/17/53/mockup-5206355_960_720.jpg"}
@@ -162,7 +162,7 @@ const Product = () => {
             </div>
             <Wrapper title='Related Items'>
                 {relatedProducts && relatedProducts?.length > 0 ? (
-                    <div className="grid grid-cols-4 mt-8">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-8">
                         {relatedProducts.map(relatedProduct => (<ProductCard product={relatedProduct} key={relatedProduct.id} />)
                         )}
                     </div>

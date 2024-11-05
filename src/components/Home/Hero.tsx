@@ -2,7 +2,7 @@ import { GoArrowRight } from "react-icons/go";
 import Swiper from "../Swiper";
 
 const slides = [
-    <div className='w-full h-80 bg-black text-white grid lg:grid-cols-2'>
+    <div className='w-full lg:h-80 bg-black text-white grid lg:grid-cols-2'>
         <div className='p-4 lg:p-16'>
             <h1 className='text-[30px] font-semibold mb-6'>
                 Up to 10% off Voucher
@@ -16,7 +16,7 @@ const slides = [
             <img className="h-full" src="/imgs/hero-img.png" alt="" />
         </div>
     </div>,
-    <div className='w-full h-80 bg-black text-white grid grid-cols-2'>
+    <div className='w-full lg:h-80 bg-black text-white grid lg:grid-cols-2'>
         <div className='p-4 lg:p-16'>
             <h1 className='text-[30px] font-semibold mb-6'>
                 New Arrivals!
@@ -26,7 +26,7 @@ const slides = [
                 <GoArrowRight className="mt-1" />
             </button>
         </div>
-        <div className='p-4'>
+        <div className='lg:p-4'>
             <img className="h-full" src="/imgs/sm-s24.avif" alt="" />
         </div>
     </div>

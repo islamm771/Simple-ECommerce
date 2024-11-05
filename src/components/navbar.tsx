@@ -45,9 +45,10 @@ const MyNavbar = () => {
                     <span className={`bg-black rounded-sm w-8 h-1 block ${isMenuOpen ? "-rotate-45 -mt-[7px]" : "rotate-0"}`}></span>
                 </button>
                 <div
-                    className={`link-collapse flex-grow flex flex-col lg:flex-row justify-between lg:justify-start w-full lg:w-fit overflow-hidden lg:overflow-visible transition-[height] ease-linear duration-500`}
+                    className={`link-collapse flex-grow flex flex-col lg:flex-row justify-between lg:justify-start w-full lg:w-fit`}
                     style={{
-                        height: windowWidth < 1024 ? isMenuOpen ? `${320}px` : '0px' : 'auto',
+                        height: windowWidth < 1024 ? isMenuOpen ? `${280}px` : '0px' : 'auto',
+                        overflow: windowWidth < 1024 ? isMenuOpen ? `visible` : 'hidden' : 'visible',
                     }}>
                     <ul className="flex flex-col lg:flex-row lg:items-center leading-none lg:mx-auto lg:gap-5" ref={menuRef}>
                         <li className="p-2">

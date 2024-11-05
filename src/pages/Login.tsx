@@ -57,11 +57,11 @@ const Login = () => {
 
     return (
         <div className="flex">
-            <div>
+            <div className="hidden md:block">
                 <img className="w-[600px]" src="/imgs/side-img.png" alt="" />
             </div>
             <div className="flex-1 flex justify-center py-28 px-12">
-                <form className="w-[400px] space-y-4" onSubmit={handleSubmit(onSubmit)}>
+                <form className="w-full md:w-[400px] space-y-4" onSubmit={handleSubmit(onSubmit)}>
                     <div className="!mb-8">
                         <h2 className="text-[20px] font-semibold mb-2">Log in to Exclusive</h2>
                         <p className="">Enter your details below</p>
