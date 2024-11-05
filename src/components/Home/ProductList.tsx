@@ -31,8 +31,8 @@ const ProductList = () => {
     }
     return (
         <Wrapper title="Our Products" classes="mb-16">
-            <div className="flex justify-between">
-                <h2 className="text-2xl font-semibold mt-5">Explore Our Products</h2>
+            <div className="flex justify-between items-center mt-5">
+                <h2 className="text-2xl font-semibold">Explore Our Products</h2>
                 <Button width="w-fit">View All Products</Button>
             </div>
             {data?.length ? <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 my-8">

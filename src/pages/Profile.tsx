@@ -1,14 +1,18 @@
 import { yupResolver } from "@hookform/resolvers/yup"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import toast from "react-hot-toast"
+import { FaBars } from "react-icons/fa"
 import { useGetProfileQuery, useUpdateProfileMutation } from "../app/features/ProfileSlice"
 import InputErrorMessage from "../components/InputErrorMessage"
 import PathElement from "../components/PathElement"
 import Button from "../components/ui/button"
 import { IProfileForm } from "../interface"
 import { profileSchema } from "../validation"
+import { IoIosArrowRoundBack } from "react-icons/io";
+
 const Profile = () => {
+    const [showAside, setShowAside] = useState(false)
     const { register, handleSubmit, formState: { errors }, reset } = useForm<IProfileForm>({ resolver: yupResolver(profileSchema) })
     const { data } = useGetProfileQuery()
     const [updateProfile, { isSuccess, error, isLoading }] = useUpdateProfileMutation()
@@ -54,8 +58,11 @@ const Profile = () => {
                 <PathElement indexPath="My Account" />
                 <p>Welcome! <span className="text-red-500 capitalize">{data?.username}</span></p>
             </div>
-            <div className="grid grid-cols-12 gap-4 my-12">
-                <aside className="col-span-3">
+            <div className="grid grid-cols-12 gap-4 my-12 relative">
+                <aside className={`bg-white ${showAside ? 'absolute z-10 w-full h-full py-4 px-5 rounded-md block' : 'hidden'}  md:col-span-3`}>
+                    <button onClick={() => setShowAside(false)}>
+                        <IoIosArrowRoundBack size={30} />
+                    </button>
                     <ul className="space-y-6">
                         <li>
                             <h3 className="mb-3 font-medium">Manage My Account</h3>
@@ -78,8 +85,11 @@ const Profile = () => {
                         </li>
                     </ul>
                 </aside>
-                <div className="col-span-9 p-5 lg:p-8 shadow-md rounded-md">
-                    <h3 className="text-red-500 font-medium mb-4">Edit Your Profile</h3>
+                <div className="col-span-12 md:col-span-9 p-5 lg:p-8 shadow-md rounded-md">
+                    <button onClick={() => setShowAside(true)}>
+                        <FaBars size={25} />
+                    </button>
+                    <h3 className="text-red-500 font-medium my-4">Edit Your Profile</h3>
                     <form className="grid gap-8" onSubmit={handleSubmit(onSubmit)}>
                         <div className="grid md:grid-cols-2 gap-8 lg:gap-20">
                             <div>
