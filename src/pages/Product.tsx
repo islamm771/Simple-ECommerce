@@ -12,13 +12,13 @@ import Button from '../components/ui/button';
 import Wrapper from '../components/ui/Wrapper';
 import { IProduct } from '../interface';
 import { AxiosError } from 'axios';
+import { getUserData } from '../data';
+import ProductDetailsSkeleton from '../components/ProductDetailsSkeleton';
 
 const Product = () => {
     const { id } = useParams()
     const [quantity, setQuantity] = useState(1)
-    const userDataString = localStorage.getItem("userData")
-    const userData = userDataString ? JSON.parse(userDataString) : null
-    const { id: userId } = userData.user;
+    const userData = getUserData();
     const [addToCart, { isSuccess: isAddingSuccess }] = useAddToCartMutation();
 
     const { isLoading, error, data } = useGetProductByIdQuery({ id: id || '' })
@@ -27,6 +27,7 @@ const Product = () => {
     const { data: relatedProducts } = useGetRelatedProductsQuery({ id: id || '' })
 
     const handleAddToCart = async (productId: number) => {
+        const { id: userId } = userData.user;
         try {
             addToCart({
                 userId,
@@ -47,7 +48,9 @@ const Product = () => {
         }
     }, [isAddingSuccess]);
 
-    if (isLoading) return <p>Loading...</p>
+    if (isLoading) return (
+        <ProductDetailsSkeleton />
+    )
 
     if (error) {
         const errorObj = error as AxiosError
@@ -120,18 +123,18 @@ const Product = () => {
                             <div className="flex items-center gap-4 mb-4 size">
                                 <span className="">Size:</span>
                                 <div className="flex items-center gap-2">
-                                    <button className="py-0 px-2 rounded-sm border border-solid border-black hover:bg-red-600 hover:text-white hover:border-red-600">S</button>
-                                    <button className="py-0 px-2 rounded-sm border border-solid border-black hover:bg-red-600 hover:text-white hover:border-red-600">M</button>
-                                    <button className="py-0 px-2 rounded-sm border border-solid border-black hover:bg-red-600 hover:text-white hover:border-red-600">L</button>
-                                    <button className="py-0 px-2 rounded-sm border border-solid border-black hover:bg-red-600 hover:text-white hover:border-red-600">XL</button>
-                                    <button className="py-0 px-2 rounded-sm border border-solid border-black hover:bg-red-600 hover:text-white hover:border-red-600">XXL</button>
+                                    <button className="py-0 px-2 rounded-sm border border-solid border-black hover:bg-red-500 hover:text-white hover:border-red-500">S</button>
+                                    <button className="py-0 px-2 rounded-sm border border-solid border-black hover:bg-red-500 hover:text-white hover:border-red-500">M</button>
+                                    <button className="py-0 px-2 rounded-sm border border-solid border-black hover:bg-red-500 hover:text-white hover:border-red-500">L</button>
+                                    <button className="py-0 px-2 rounded-sm border border-solid border-black hover:bg-red-500 hover:text-white hover:border-red-500">XL</button>
+                                    <button className="py-0 px-2 rounded-sm border border-solid border-black hover:bg-red-500 hover:text-white hover:border-red-500">XXL</button>
                                 </div>
                             </div>
                             <div className='flex gap-3 buy'>
                                 <div className="flex">
                                     <button className='px-5 border border-solid border-gray-300 rounded-l-[4px] disabled:opacity-50 disabled:cursor-not-allowed' disabled={quantity == 1} onClick={() => setQuantity(prev => prev - 1)}><FaMinus /></button>
                                     <span className='px-5 py-1 border boder-solid border-gray-300 flex items-center'>{quantity}</span>
-                                    <button className='px-5 bg-red-600 text-white rounded-r-[4px] disabled:opacity-50 disabled:cursor-not-allowed' disabled={quantity == productData.count} onClick={() => setQuantity(prev => prev + 1)}><FaPlus /></button>
+                                    <button className='px-5 bg-red-500 text-white rounded-r-[4px] disabled:opacity-50 disabled:cursor-not-allowed' disabled={quantity == productData.count} onClick={() => setQuantity(prev => prev + 1)}><FaPlus /></button>
                                 </div>
                                 <Button width='w-fit' onClick={() => handleAddToCart(productData.id)}>
                                     Buy now

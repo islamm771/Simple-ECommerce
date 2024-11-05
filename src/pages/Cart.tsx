@@ -2,10 +2,13 @@ import { Table } from "flowbite-react";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { useAddToCartMutation, useGetCartQuery } from "../app/features/CartSlice";
+import { useAddToCartMutation, useDeleteFromCartMutation, useGetCartQuery } from "../app/features/CartSlice";
 import Button from "../components/ui/button";
 import { getUserData } from "../data";
 import { IProduct } from "../interface";
+import { FaTrashAlt } from "react-icons/fa";
+import PathElement from "../components/PathElement";
+import CartSkeleton from "../components/CartSkeleton";
 
 const Cart = () => {
     const navigate = useNavigate()
@@ -14,6 +17,7 @@ const Cart = () => {
 
     const { isLoading, data } = useGetCartQuery({ userId: userId })
     const [addToCart, { isSuccess: isAddingSuccess }] = useAddToCartMutation();
+    const [removeFromCart, { isSuccess: isDeletingSuccess }] = useDeleteFromCartMutation();
 
     // State to keep track of the cart products locally
     const [cartItems, setCartItems] = useState<IProduct[]>([]);
@@ -32,16 +36,17 @@ const Cart = () => {
                 duration: 2000
             })
         }
-    }, [isAddingSuccess]);
+        if (isDeletingSuccess) {
+            toast.success('Product is removed from cart successfully', {
+                position: "top-right",
+                duration: 2000
+            })
+        }
+    }, [isAddingSuccess, isDeletingSuccess]);
 
     if (isLoading) return (
-        <div className="container">
-            <div role="status" className="animate-pulse">
-                Loading...
-            </div>
-        </div>
+        <CartSkeleton />
     )
-
 
     // Handle quantity change for each product
     const handleQuantityChange = (productId: number, newQuantity: number) => {
@@ -57,10 +62,7 @@ const Cart = () => {
             addToCart({
                 userId,
                 products: cartItems.map(item => (
-                    {
-                        productId: item.id,
-                        quantity: item.quantity
-                    }
+                    { productId: item.id, quantity: item.quantity }
                 ))
             })
         } catch (error) {
@@ -68,11 +70,18 @@ const Cart = () => {
         }
     }
 
+    const handleDeleteFromCart = (productId: number) => {
+        // setCartItems(prevItems => prevItems.filter(item => item.id !== productId));
+        removeFromCart({
+            userId,
+            productId
+        })
+    }
+
     return (
         <div className="container">
-            <p className="text-gray-400 my-8">Home / <span className="text-black capitalize">{location.pathname.split("/")}</span></p>
-
-            {cartItems.length ? (
+            <PathElement indexPath={"Cart"} />
+            {data?.cart.length ? (
                 <>
                     <div className="overflow-x-auto">
                         <Table>
@@ -81,9 +90,10 @@ const Cart = () => {
                                 <Table.HeadCell>Price</Table.HeadCell>
                                 <Table.HeadCell>Quantity</Table.HeadCell>
                                 <Table.HeadCell>Subtotal</Table.HeadCell>
+                                <Table.HeadCell></Table.HeadCell>
                             </Table.Head>
                             <Table.Body className="divide-y">
-                                {cartItems.map((product: IProduct) => (
+                                {data?.cart.map((product: IProduct) => (
                                     <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800 overflow-x-scroll" key={product.id}>
                                         <Table.Cell className="whitespace-nowrap flex gap-2 items-center font-medium text-gray-900 dark:text-white">
                                             <img src={product.image} alt={product.title} className="w-8 h-8" />
@@ -102,6 +112,11 @@ const Cart = () => {
                                         </Table.Cell>
                                         <Table.Cell>
                                             ${product.price * product.quantity}
+                                        </Table.Cell>
+                                        <Table.Cell>
+                                            <button className="text-red-500" onClick={() => handleDeleteFromCart(product.id)}>
+                                                <FaTrashAlt />
+                                            </button>
                                         </Table.Cell>
                                     </Table.Row>
                                 ))}
@@ -149,9 +164,6 @@ const Cart = () => {
                     <h2 className="text-center text-[25px] font-semibold mt-8">No products in cart</h2>
                 </div>
             }
-
-
-
         </div >
     )
 }

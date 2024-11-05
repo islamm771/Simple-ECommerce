@@ -14,6 +14,7 @@ const cartSlice = createApi({
         }
     }),
     tagTypes: ["Cart"],
+    reducerPath: "Cart",
     endpoints: (builder) => ({
         getCart: builder.query<{ cart: IProduct[] }, { userId: number }>({
             query: (arg) => ({

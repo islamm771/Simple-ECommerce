@@ -77,7 +77,7 @@ const ProductCard = ({ product, isSale }: IProps) => {
                     ))}
                 </span>
             </div>
-        </div >
+        </div>
     )
 }
 
