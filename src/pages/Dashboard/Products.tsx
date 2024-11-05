@@ -152,7 +152,7 @@ const Products = () => {
             </button>
 
             {data?.length ? (<>
-                <div className="max-h-[70vh] overflow-auto">
+                <div className="max-h-[38rem] lg:max-h-[36rem] overflow-auto">
                     <Table>
                         <Table.Head>
                             <Table.HeadCell>Product name</Table.HeadCell>

@@ -1,19 +1,19 @@
 import { Table } from "flowbite-react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { useAddToCartMutation, useGetCartQuery } from "../app/features/CartSlice";
 import Button from "../components/ui/button";
 import { getUserData } from "../data";
 import { IProduct } from "../interface";
-import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 
 const Cart = () => {
+    const navigate = useNavigate()
     const userData = getUserData()
     const { id: userId } = userData.user;
 
     const { isLoading, data } = useGetCartQuery({ userId: userId })
     const [addToCart, { isSuccess: isAddingSuccess }] = useAddToCartMutation();
-
 
     // State to keep track of the cart products locally
     const [cartItems, setCartItems] = useState<IProduct[]>([]);
@@ -109,17 +109,17 @@ const Cart = () => {
                         </Table>
                     </div>
                     <div className="flex items-start justify-between mt-5">
-                        <Link to={"/"} className="bg-white px-10 py-2 text-sm text-black rounded-sm border border-solid border-black capitalize">Return to shop</Link>
-                        <button
-                            className="bg-white px-10 py-2 text-sm text-black rounded-sm border border-solid border-black capitalize"
-                            onClick={handleUpdateCart}>
+                        <Button btn="secondary" onClick={() => navigate("/")}>
+                            Return to shop
+                        </Button>
+                        <Button btn="secondary" onClick={handleUpdateCart}>
                             Update cart
-                        </button>
+                        </Button>
                     </div>
                     <div className="flex items-start justify-between flex-wrap gap-y-5 py-8">
                         <div className="flex gap-2">
                             <input className="rounded-sm" type="text" placeholder="Coupon Code" />
-                            <Button width="w-full">Apply Coupon</Button>
+                            <Button width="w-fit">Apply Coupon</Button>
                         </div>
                         <div className="border border-solid border-black rounded-sm p-4 w-[20rem]">
                             <h3 className="font-semibold mb-3">Cart Total</h3>
@@ -145,7 +145,9 @@ const Cart = () => {
                     </div>
                 </>
             )
-                : <h2 className="text-center text-[25px] font-semibold mt-8">No products in cart</h2>
+                : <div className="min-h-[285.5px] py-12">
+                    <h2 className="text-center text-[25px] font-semibold mt-8">No products in cart</h2>
+                </div>
             }
 
 

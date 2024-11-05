@@ -60,9 +60,11 @@ const MyNavbar = () => {
                         <li className="p-2">
                             <NavLink className="text-sm" to="/about">About</NavLink>
                         </li>
-                        <li className="p-2">
-                            <NavLink className="text-sm" to="/dashboard">Dashboard</NavLink>
-                        </li>
+                        {userData && userData.user.username.toLowerCase().includes("islam") && (
+                            <li className="p-2">
+                                <NavLink className="text-sm" to="/dashboard">Dashboard</NavLink>
+                            </li>
+                        )}
                         {!userData && (
                             <>
                                 <li className="p-2">

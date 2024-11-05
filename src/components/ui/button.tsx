@@ -4,13 +4,17 @@ interface IProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     children: ReactNode,
     isLoading?: boolean,
     centered?: boolean,
-    width: "w-fit" | "w-full"
+    width?: "w-fit" | "w-full",
+    btn?: "primary" | "secondary",
 }
 
-const Button = ({ width = "w-fit", children, centered, isLoading, ...rest }: IProps) => {
+const Button = ({ width = "w-fit", btn = "primary", children, centered, isLoading, ...rest }: IProps) => {
     return (
         <button
-            className={`bg-[#DB4444] ${width} px-4 py-[14px] text-sm flex items-center justify-center ${centered ? 'mx-auto' : ''} rounded-[4px] font-medium text-white duration-300 disabled:opacity-50 disabled:cursor-not-allowed`}
+            className={`text-sm flex items-center justify-center rounded-[4px] font-medium capitalize
+                ${btn === "primary" ? `px-4 py-[14px] ${width} bg-red-500 ${centered ? 'mx-auto' : ''} text-white` :
+                    'bg-white px-7 md:px-10 py-2 text-black border border-solid border-black '}
+                duration-300 disabled:opacity-50 disabled:cursor-not-allowed`}
             disabled={isLoading}
             {...rest}
         >

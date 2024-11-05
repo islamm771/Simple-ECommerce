@@ -22,7 +22,7 @@ const Users = () => {
         <>
             {
                 data?.users?.length ?
-                    <div className="overflow-x-auto">
+                    <div className="max-h-[38rem] lg:max-h-[36rem] overflow-auto">
                         <Table>
                             <Table.Head>
                                 <Table.HeadCell>Username</Table.HeadCell>

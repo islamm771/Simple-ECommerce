@@ -52,4 +52,21 @@ export interface IUser {
     email: string,
     password: string,
     gender: string,
+    firstName: string,
+    lastName: string,
+    image: string,
+    address: string,
+    // orders: IOrder[]
+}
+
+
+
+export interface IProfileForm {
+    firstName: string;
+    lastName: string;
+    email: string;
+    currentPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+    address: string;
 }

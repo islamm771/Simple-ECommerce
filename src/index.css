@@ -24,3 +24,9 @@ aside a.active {
 .hero-swiper .swiper-pagination-bullet.swiper-pagination-bullet-active {
     background-color: #c81e1e;
 }
+
+
+input:focus {
+    box-shadow: none !important;
+    outline: none !important;
+}

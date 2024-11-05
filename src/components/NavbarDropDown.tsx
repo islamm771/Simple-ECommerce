@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { IUser } from "../interface";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 interface IProps {
     user: {
@@ -61,8 +62,9 @@ const NavbarDropDown = ({ user }: IProps) => {
                         <p className="text-sm font-medium text-gray-500 truncate dark:text-gray-300">{user.user.email}</p>
                     </div>
                     <ul className="py-1">
-                        <li><a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a></li>
-                        <li><a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</a></li>
+                        <li><Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">My Account</Link></li>
+                        <li><Link to="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Settings</Link></li>
+                        <li><Link to="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</Link></li>
                         <li><button className="w-full text-start block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                             onClick={onLogout}>Sign out</button></li>
                     </ul>

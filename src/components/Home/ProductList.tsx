@@ -6,6 +6,7 @@ import ProductCard from "../ProductCard";
 import ProductSkeleton from "../ProductSkeleton";
 import Wrapper from "../ui/Wrapper";
 import Button from "../ui/button";
+import { shuffleArray } from "../../utilities";
 
 
 
@@ -30,16 +31,18 @@ const ProductList = () => {
     }
     return (
         <Wrapper title="Our Products" classes="mb-16">
-            <h2 className="text-2xl font-semibold mt-5">Explore Our Products</h2>
+            <div className="flex justify-between">
+                <h2 className="text-2xl font-semibold mt-5">Explore Our Products</h2>
+                <Button width="w-fit">View All Products</Button>
+            </div>
             {data?.length ? <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 my-8">
-                {data.map((product: IProduct) => (
+                {shuffleArray(data).map((product: IProduct) => (
                     <ProductCard product={product} key={product.id} />
                 ))}
             </div> : (
                 <NotFoundItems msg="No products are added" />
             )}
 
-            <Button width="w-fit" centered>View All Products</Button>
         </Wrapper>
     )
 }

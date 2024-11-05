@@ -2,7 +2,7 @@ import { GoArrowRight } from "react-icons/go";
 import Swiper from "../Swiper";
 
 const slides = [
-    <div className='w-full lg:h-80 bg-black text-white grid lg:grid-cols-2'>
+    <div className='w-full lg:h-[350px] bg-black text-white grid lg:grid-cols-2'>
         <div className='p-4 lg:p-16'>
             <h1 className='text-[30px] font-semibold mb-6'>
                 Up to 10% off Voucher
@@ -16,7 +16,7 @@ const slides = [
             <img className="h-full" src="/imgs/hero-img.png" alt="" />
         </div>
     </div>,
-    <div className='w-full lg:h-80 bg-black text-white grid lg:grid-cols-2'>
+    <div className='w-full lg:h-[350px] bg-black text-white grid lg:grid-cols-2'>
         <div className='p-4 lg:p-16'>
             <h1 className='text-[30px] font-semibold mb-6'>
                 New Arrivals!
@@ -35,8 +35,8 @@ const slides = [
 
 const Hero = () => {
     return (
-        <header className="grid grid-cols-12 container mb-20">
-            <aside className="col-span-3 border-r border-solid border-gray-300 py-4 lg:py-8">
+        <header className="grid grid-cols-12 container mb-24">
+            <aside className="col-span-3 border-r border-solid border-gray-300 pt-4 lg:pt-8">
                 <ul className='flex flex-col justify-between h-full'>
                     <li className='cursor-pointer hover:underline'>Woman’s Fashion</li>
                     <li className='cursor-pointer hover:underline'>Men’s Fashion</li>
@@ -47,7 +47,7 @@ const Hero = () => {
                     <li className='cursor-pointer hover:underline'>Health & Beauty</li>
                 </ul>
             </aside>
-            <div className="col-span-9 p-4 lg:p-8">
+            <div className="col-span-9 px-4 pt-4 lg:px-8 lg:pt-8">
                 <Swiper
                     slidesPerView={1}
                     className="hero-swiper"
