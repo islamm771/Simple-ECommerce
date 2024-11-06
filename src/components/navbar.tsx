@@ -65,7 +65,7 @@ const MyNavbar = () => {
                         height: windowWidth < 1024 ? isMenuOpen ? `${280}px` : '0px' : 'auto',
                         overflow: windowWidth < 1024 ? isMenuOpen ? `visible` : 'hidden' : 'visible',
                     }}>
-                    <ul className="flex flex-col lg:flex-row lg:items-center leading-none lg:mx-auto lg:gap-5" ref={menuRef}>
+                    <ul className="flex flex-col lg:flex-row lg:items-center leading-none lg:mx-auto lg:gap-5 mt-4 lg:mt-0" ref={menuRef}>
                         <li className="p-2">
                             <NavLink className="text-sm" to="/">Home</NavLink>
                         </li>
