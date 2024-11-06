@@ -18,9 +18,7 @@ const DashboardLayout = () => {
                         Dashboard
                     </span>
                 </Navbar.Brand>
-                <div className="flex items-center">
-                    <NavbarDropDown user={user} />
-                </div>
+                <NavbarDropDown user={user} />
             </Navbar>
 
             {/* Main content */}

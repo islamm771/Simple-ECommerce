@@ -43,7 +43,7 @@ const Profile = () => {
             })
         }
         if (error) {
-            const errorObj = error as { data: { error: "string" } }
+            const errorObj = error as { data: { error: string } }
             toast.error(`${errorObj.data.error}`, {
                 position: "top-right",
                 duration: 3000

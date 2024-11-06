@@ -56,7 +56,13 @@ const productsSlice = createApi({
                 url: `/${id}/related`,
                 method: "GET",
             }),
-        })
+        }),
+        getSearchProduct: builder.query<IProduct[], { searchQuery: string }>({
+            query: ({ searchQuery }) => ({
+                url: `/search?q=${searchQuery}`,
+                method: "GET",
+            }),
+        }),
         // deleteFromProducts: builder.mutation<IProduct, { userId: number; productId: number }>({
         //     query: (payload) => ({
         //         url: `/products`,
@@ -75,7 +81,8 @@ export const {
     useGetProductByIdQuery,
     // useDeleteFromProductsMutation,
     useGetProductsByCategoryQuery,
-    useGetRelatedProductsQuery
+    useGetRelatedProductsQuery,
+    useGetSearchProductQuery
 } = productsSlice;
 
 export default productsSlice;

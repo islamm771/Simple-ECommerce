@@ -7,20 +7,19 @@ const ProductDetailsSkeleton = () => {
             <PathElement pathes={`Category /`} indexPath={"Title"} />
             <div role="status" className="animate-pulse">
                 <div className="flex flex-col lg:flex-row gap-y-8">
-                    <div className="md:flex-1 pr-4 flex flex-col-reverse md:flex-row gap-4">
-                        <ul className='h-auto md:h-[460px] flex md:flex-col gap-4'>
+                    <div className="md:flex-1 pr-4 flex flex-col-reverse md:flex-row gap-4 min-h-[460px]">
+                        <ul className='h-[80px] md:h-[460px] flex md:flex-col gap-4'>
                             {[0, 0, 0, 0].map((_, idx) => (
-                                <li key={idx}>
-                                    <div className="size-[100px] object-cover rounded-md  bg-gray-200 dark:bg-gray-700"></div>
+                                <li className='flex-grow' key={idx}>
+                                    <div className="size-full md:size-[100px] object-cover rounded-md  bg-gray-200 dark:bg-gray-700"></div>
                                 </li>
                             ))}
                         </ul>
-                        <div className="h-[460px] rounded-md mb-4 flex-1">
-                            <div className="size-full rounded-md  bg-gray-200 dark:bg-gray-700"></div>
+                        <div className="w-full h-64 md:h-[460px] rounded-md flex-1 bg-gray-200 dark:bg-gray-700">
                         </div>
 
                     </div>
-                    <div className="max-w-[420px] px-4">
+                    <div className="md:max-w-[420px] px-4">
                         <div className="w-48 h-2 rounded-sm bg-gray-200 dark:bg-gray-700 mb-4"></div>
 
                         <div className='flex items-center gap-4 mb-3'>

@@ -29,6 +29,7 @@ const ProductList = () => {
             <h2 className="text-center text-[25px] font-semibold mt-8">{`${axiosError.response?.data.error}`}</h2>
         </div>;
     }
+
     return (
         <Wrapper title="Our Products" classes="mb-16">
             <div className="flex justify-between items-center mt-5">

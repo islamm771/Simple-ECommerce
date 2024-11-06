@@ -133,7 +133,7 @@ const Cart = () => {
                     </div>
                     <div className="flex items-start justify-between flex-wrap gap-y-5 py-8">
                         <div className="flex gap-2">
-                            <input className="rounded-sm" type="text" placeholder="Coupon Code" />
+                            <input className="w-52 md:w-64 rounded-sm" type="text" placeholder="Coupon Code" />
                             <Button width="w-fit">Apply Coupon</Button>
                         </div>
                         <div className="border border-solid border-black rounded-sm p-4 w-[20rem]">

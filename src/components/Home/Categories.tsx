@@ -1,12 +1,13 @@
-import useAuthenticatedQuery from "../../hooks/useAuthenticatedQuery";
-import { ICategory } from "../../interface";
-import { CiMobile4, CiLaptop } from "react-icons/ci";
-import { PiWatch } from "react-icons/pi";
-import { FaTshirt } from "react-icons/fa";
 import { BiSolidCategory } from "react-icons/bi";
-import Wrapper from "../ui/Wrapper";
+import { CiLaptop, CiMobile4 } from "react-icons/ci";
+import { FaTshirt } from "react-icons/fa";
+import { PiWatch } from "react-icons/pi";
+import { useGetAllCategoriesQuery } from "../../app/features/CategoriesSlice";
+import { ICategory } from "../../interface";
+import CategoriesSkeleton from "../CategoriesSkeleton";
 import NotFoundItems from "../NotFoundItems";
 import Swiper from "../Swiper";
+import Wrapper from "../ui/Wrapper";
 
 // Map category names to specific icons
 const iconMap: Record<string, JSX.Element> = {
@@ -18,10 +19,7 @@ const iconMap: Record<string, JSX.Element> = {
 
 
 const Categories = () => {
-    const { data } = useAuthenticatedQuery({
-        queryKey: ["categories"],
-        url: "/categories",
-    })
+    const { isLoading, data } = useGetAllCategoriesQuery()
 
     const slides = data?.map((category: ICategory) => (
         <div key={category.id} className="border border-solid border-gray-300 p-5 flex flex-col items-center text-xl cursor-pointer hover:bg-red-600 hover:text-white">
@@ -29,6 +27,12 @@ const Categories = () => {
             <h3>{category.name}</h3>
         </div>
     ))
+
+    if (isLoading) {
+        return (
+            <CategoriesSkeleton />
+        )
+    }
 
     return (
         <Wrapper classes="py-10 mb-10" title="Categories">

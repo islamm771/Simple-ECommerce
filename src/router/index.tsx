@@ -14,6 +14,7 @@ import Products from "../pages/Dashboard/Products";
 import Users from "../pages/Dashboard/Users";
 import Dashboard from "../pages/Dashboard/Index";
 import Categories from "../pages/Dashboard/Categories";
+import Search from "../pages/Search";
 
 const userData = getUserData()
 
@@ -22,6 +23,7 @@ export const router = createBrowserRouter(createRoutesFromElements(
         <Route path="/" element={<RootLayout />}>
             <Route index element={<Index />} />
             <Route path="/products/:id" element={<Product />} />
+            <Route path="/products/search" element={<Search />} />
             <Route path="/cart" element={
                 <ProtectedRoute isAllowed={userData?.token} path="/login">
                     <Cart />

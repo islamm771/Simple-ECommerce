@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IProduct } from "../../interface";
 import { getUserData } from "../../data";
+import { IProduct } from "../../interface";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const user = getUserData()
@@ -16,12 +16,26 @@ const cartSlice = createApi({
     tagTypes: ["Cart"],
     reducerPath: "Cart",
     endpoints: (builder) => ({
-        getCart: builder.query<{ cart: IProduct[] }, { userId: number }>({
-            query: (arg) => ({
-                url: `/${arg.userId}`,
-                method: "GET",
-            }),
+        getCart: builder.query<{ cart: IProduct[] } | null, { userId: number | undefined }>({
+            query: ({ userId }) => `/${userId}`,
             providesTags: ["Cart"],
+
+            // queryFn: async ({ userId }, _queryApi, _extraOptions, fetchWithBQ) => {
+            //     if (userId === undefined) {
+            //         return { data: null as { cart: IProduct[] } | null };
+            //     }
+
+            //     const result = await fetchWithBQ({
+            //         url: `/${userId}`,
+            //         method: "GET",
+            //     });
+
+            //     if (result.error) {
+            //         return { error: result.error };
+            //     }
+
+            //     return result as QueryReturnValue<{ cart: IProduct[] } | null, FetchBaseQueryError, FetchBaseQueryMeta>;
+            // },
         }),
         addToCart: builder.mutation<IProduct, { userId: number; products: { productId: number; quantity: number }[] }>({
             query: (payload) => ({

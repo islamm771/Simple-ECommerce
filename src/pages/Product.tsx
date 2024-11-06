@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import { FaMinus, FaPlus, FaRegHeart, FaStar, FaTimes } from 'react-icons/fa';
 import { FaTruckFast } from "react-icons/fa6";
 import { TfiReload } from "react-icons/tfi";
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAddToCartMutation } from '../app/features/CartSlice';
 import { useGetProductByIdQuery, useGetRelatedProductsQuery } from '../app/features/ProductsSlice';
 import PathElement from '../components/PathElement';
@@ -16,10 +16,11 @@ import { getUserData } from '../data';
 import ProductDetailsSkeleton from '../components/ProductDetailsSkeleton';
 
 const Product = () => {
-    const { id } = useParams()
-    const [quantity, setQuantity] = useState(1)
+    const navigate = useNavigate();
+    const { id } = useParams();
+    const [quantity, setQuantity] = useState(1);
     const userData = getUserData();
-    const [addToCart, { isSuccess: isAddingSuccess }] = useAddToCartMutation();
+    const [addToCart, { isSuccess: isAddingSuccess, error: AddingError }] = useAddToCartMutation();
 
     const { isLoading, error, data } = useGetProductByIdQuery({ id: id || '' })
 
@@ -27,16 +28,15 @@ const Product = () => {
     const { data: relatedProducts } = useGetRelatedProductsQuery({ id: id || '' })
 
     const handleAddToCart = async (productId: number) => {
-        const { id: userId } = userData.user;
-        try {
-            addToCart({
-                userId,
-                products: [{ productId, quantity }]
-            })
-        } catch (err) {
-            console.log("Failed to add product to cart:", err);
-            toast.error("Failed to add product to cart");
+        if (!userData) {
+            navigate("/login");
+            return;
         }
+        const { id: userId } = userData.user;
+        addToCart({
+            userId,
+            products: [{ productId, quantity }]
+        })
     }
 
     useEffect(() => {
@@ -46,7 +46,14 @@ const Product = () => {
                 duration: 2000
             })
         }
-    }, [isAddingSuccess]);
+        if (AddingError) {
+            const errorObj = AddingError as { data: { error: string } }
+            toast.error(`${errorObj.data.error}`, {
+                position: "top-right",
+                duration: 3000
+            })
+        }
+    }, [isAddingSuccess, AddingError]);
 
     if (isLoading) return (
         <ProductDetailsSkeleton />
@@ -56,6 +63,7 @@ const Product = () => {
         const errorObj = error as AxiosError
         return <div className='container'> {errorObj.message} </div>
     }
+
 
     return (
         <>
