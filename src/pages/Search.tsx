@@ -11,7 +11,7 @@ const Search = () => {
     return (
         <div className="container">
             <PathElement pathes={"Products /"} indexPath={`${searchQuery}`} />
-            <div className="grid grid-cols-4 gap-4 my-8">
+            <div className="grid grid-cols2 grid-cols-4 gap-4 my-8">
                 {data.map(product => (
                     <ProductCard key={product.id} product={product} />
                 ))}
