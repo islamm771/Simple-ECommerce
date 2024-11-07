@@ -53,14 +53,14 @@ const Profile = () => {
 
 
     return (
-        <div className="container">
+        <div className="container pb-12">
             <div className="flex items-center justify-between">
                 <PathElement indexPath="My Account" />
                 <p>Welcome! <span className="text-red-500 capitalize">{data?.username}</span></p>
             </div>
-            <div className="grid grid-cols-12 gap-4 my-12 relative">
-                <aside className={`bg-white ${showAside ? 'absolute z-10 w-full h-full py-4 px-5 rounded-md block' : 'hidden'}  md:col-span-3`}>
-                    <button onClick={() => setShowAside(false)}>
+            <div className="grid grid-cols-12 gap-4 relative mt-8">
+                <aside className={`bg-white lg:block ${showAside ? 'absolute z-10 w-full h-full py-4 px-5 rounded-md block' : 'hidden'} md:col-span-3`}>
+                    <button className="block lg:hidden" onClick={() => setShowAside(false)}>
                         <IoIosArrowRoundBack size={30} />
                     </button>
                     <ul className="space-y-6">
@@ -85,8 +85,8 @@ const Profile = () => {
                         </li>
                     </ul>
                 </aside>
-                <div className="col-span-12 md:col-span-9 p-5 lg:p-8 shadow-md rounded-md">
-                    <button onClick={() => setShowAside(true)}>
+                <div className="col-span-12 lg:col-span-9 p-5 lg:p-8 shadow-md rounded-md">
+                    <button className="block lg:hidden" onClick={() => setShowAside(true)}>
                         <FaBars size={25} />
                     </button>
                     <h3 className="text-red-500 font-medium my-4">Edit Your Profile</h3>
