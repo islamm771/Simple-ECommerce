@@ -63,7 +63,7 @@ const ProductCard = ({ product, isSale }: IProps) => {
                     ${favouritesData && favouritesData.favourites.find(fav => fav.id === product.id) ? 'text-red-500' : 'text-black'}`}
                         onClick={() => handleAddToFav(product.id)}
                     >
-                        {favouritesData && favouritesData.favourites.find(fav => fav.id === product.id) ? <FaHeart /> : <FaRegHeart />}
+                        {favouritesData && favouritesData.favourites.find(fav => fav.id === product.id) ? <FaHeart size={14} /> : <FaRegHeart size={14} />}
                     </li>
                     <li className='bg-white w-6 h-6 rounded-full flex items-center justify-center cursor-pointer'>
                         <MdOutlineRemoveRedEye />

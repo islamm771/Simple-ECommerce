@@ -8,7 +8,7 @@ const user = getUserData()
 const favouritesSlice = createApi({
     baseQuery: fetchBaseQuery({
         // baseUrl: "http://localhost:3030/favourites",
-        baseUrl: `${API_URL}/favorites`,
+        baseUrl: `${API_URL}/favourites`,
         headers: {
             Authorization: `Bearer ${user?.token}`,
         }

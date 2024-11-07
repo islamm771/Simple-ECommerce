@@ -3,12 +3,25 @@ import { useGetAllProductsQuery } from '../../app/features/ProductsSlice';
 import ProductCard from '../ProductCard';
 import Swiper from '../Swiper';
 import Wrapper from '../ui/Wrapper';
+import ProductSkeleton from '../Skeletons/ProductSkeleton';
 
 const FlashSales = () => {
 
-    const { data } = useGetAllProductsQuery();
+    const { isLoading, data } = useGetAllProductsQuery();
+
+    if (isLoading) return (
+        <Wrapper title="Today's" classes='mb-10'>
+            <h2 className="text-2xl font-semibold mt-5">Flash Sales</h2>
+            <div role="status" className="animate-pulse grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+                <ProductSkeleton />
+                <ProductSkeleton />
+                <ProductSkeleton />
+            </div>
+        </Wrapper>
+    )
 
     const slides = data?.map(product => <ProductCard key={product.id} product={product} isSale />);
+
     return (
         <Wrapper title="Today's" classes='mb-10'>
             <h2 className="text-2xl font-semibold mt-5">Flash Sales</h2>
