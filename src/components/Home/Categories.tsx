@@ -4,7 +4,7 @@ import { FaTshirt } from "react-icons/fa";
 import { PiWatch } from "react-icons/pi";
 import { useGetAllCategoriesQuery } from "../../app/features/CategoriesSlice";
 import { ICategory } from "../../interface";
-import CategoriesSkeleton from "../CategoriesSkeleton";
+import CategoriesSkeleton from "../Skeletons/CategoriesSkeleton";
 import NotFoundItems from "../NotFoundItems";
 import Swiper from "../Swiper";
 import Wrapper from "../ui/Wrapper";

@@ -3,10 +3,11 @@ import toast from "react-hot-toast"
 import { useAddToCartMutation } from "../app/features/CartSlice"
 import { IProduct } from "../interface"
 import { getUserData } from "../data"
-import { FaRegHeart, FaStar } from 'react-icons/fa';
+import { FaHeart, FaRegHeart, FaStar } from 'react-icons/fa';
 import { MdOutlineRemoveRedEye } from "react-icons/md"
 import { RiShoppingCart2Line } from "react-icons/ri"
 import { Link } from "react-router-dom"
+import { useFavorites } from "../hooks/useFavourites"
 
 
 interface IProps {
@@ -18,6 +19,7 @@ const ProductCard = ({ product, isSale }: IProps) => {
     const [isCardHovered, setIsCardHovered] = useState(false)
     const userData = getUserData();
     const [addToCart, { isSuccess: isAddingSuccess }] = useAddToCartMutation();
+    const { favouritesData, handleAddToFav } = useFavorites(userData)
 
     const handleAddToCart = async (productId: number) => {
         if (!userData) {
@@ -57,8 +59,15 @@ const ProductCard = ({ product, isSale }: IProps) => {
                     <img className="w-full h-52 object-cover transition-transform duration-500 hover:scale-110" src={product.image} alt={product.title} />
                 </Link>
                 <ul className='space-y-1 absolute top-1 right-1'>
-                    <li className='bg-white w-6 h-6 rounded-full flex items-center justify-center cursor-pointer'><FaRegHeart /></li>
-                    <li className='bg-white w-6 h-6 rounded-full flex items-center justify-center cursor-pointer'><MdOutlineRemoveRedEye /></li>
+                    <li className={`w-6 h-6 rounded-full bg-white flex items-center justify-center cursor-pointer 
+                    ${favouritesData && favouritesData.favourites.find(fav => fav.id === product.id) ? 'text-red-500' : 'text-black'}`}
+                        onClick={() => handleAddToFav(product.id)}
+                    >
+                        {favouritesData && favouritesData.favourites.find(fav => fav.id === product.id) ? <FaHeart /> : <FaRegHeart />}
+                    </li>
+                    <li className='bg-white w-6 h-6 rounded-full flex items-center justify-center cursor-pointer'>
+                        <MdOutlineRemoveRedEye />
+                    </li>
                 </ul>
                 <button
                     className={`w-full bg-black text-white text-sm flex items-center gap-1 justify-center absolute ${isCardHovered ? 'bottom-0' : '-bottom-full'} left-0 rounded-b-md py-1.5 transition-[bottom] ease-linear duration-500`}

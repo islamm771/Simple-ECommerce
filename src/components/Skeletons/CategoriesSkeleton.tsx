@@ -1,4 +1,4 @@
-import Wrapper from './ui/Wrapper'
+import Wrapper from '../ui/Wrapper'
 
 const CategoriesSkeleton = () => {
     return (

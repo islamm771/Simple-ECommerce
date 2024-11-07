@@ -15,6 +15,7 @@ import Users from "../pages/Dashboard/Users";
 import Dashboard from "../pages/Dashboard/Index";
 import Categories from "../pages/Dashboard/Categories";
 import Search from "../pages/Search";
+import Favourite from "../pages/Favourite";
 
 const userData = getUserData()
 
@@ -27,6 +28,11 @@ export const router = createBrowserRouter(createRoutesFromElements(
             <Route path="/cart" element={
                 <ProtectedRoute isAllowed={userData?.token} path="/login">
                     <Cart />
+                </ProtectedRoute>
+            } />
+            <Route path="/favourite" element={
+                <ProtectedRoute isAllowed={userData?.token} path="/login">
+                    <Favourite />
                 </ProtectedRoute>
             } />
             <Route path="/profile" element={

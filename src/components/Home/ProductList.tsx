@@ -3,7 +3,7 @@ import { useGetAllProductsQuery } from "../../app/features/ProductsSlice";
 import { IAxiosError, IProduct } from "../../interface";
 import NotFoundItems from "../NotFoundItems";
 import ProductCard from "../ProductCard";
-import ProductSkeleton from "../ProductSkeleton";
+import ProductSkeleton from "../Skeletons/ProductSkeleton";
 import Wrapper from "../ui/Wrapper";
 import Button from "../ui/button";
 import { shuffleArray } from "../../utilities";

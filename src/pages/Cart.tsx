@@ -8,7 +8,7 @@ import { getUserData } from "../data";
 import { IProduct } from "../interface";
 import { FaTrashAlt } from "react-icons/fa";
 import PathElement from "../components/PathElement";
-import CartSkeleton from "../components/CartSkeleton";
+import CartSkeleton from "../components/Skeletons/CartSkeleton";
 
 const Cart = () => {
     const navigate = useNavigate()
@@ -81,7 +81,7 @@ const Cart = () => {
     return (
         <div className="container">
             <PathElement indexPath={"Cart"} />
-            {data?.cart.length ? (
+            {cartItems.length ? (
                 <>
                     <div className="overflow-x-auto">
                         <Table>
@@ -93,7 +93,7 @@ const Cart = () => {
                                 <Table.HeadCell></Table.HeadCell>
                             </Table.Head>
                             <Table.Body className="divide-y">
-                                {data?.cart.map((product: IProduct) => (
+                                {cartItems.map((product: IProduct) => (
                                     <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800 overflow-x-scroll" key={product.id}>
                                         <Table.Cell className="whitespace-nowrap flex gap-2 items-center font-medium text-gray-900 dark:text-white">
                                             <img src={product.image} alt={product.title} className="w-8 h-8" />
@@ -102,11 +102,11 @@ const Cart = () => {
                                         <Table.Cell>${product.price}</Table.Cell>
                                         <Table.Cell>
                                             <input
-                                                className="rounded-sm py-1 pr-0 pl-2"
+                                                className="rounded-sm py-1 pr-0 pl-2 w-20"
                                                 type="number"
-                                                value={product.quantity}
                                                 min={1}
                                                 max={product.count}
+                                                value={product.quantity}
                                                 onChange={(e) => handleQuantityChange(product.id, Number(e.target.value))}
                                             />
                                         </Table.Cell>
@@ -123,7 +123,7 @@ const Cart = () => {
                             </Table.Body>
                         </Table>
                     </div>
-                    <div className="flex items-start justify-between mt-5">
+                    <div className="flex items-start justify-between mt-10 md:mt-8">
                         <Button btn="secondary" onClick={() => navigate("/")}>
                             Return to shop
                         </Button>

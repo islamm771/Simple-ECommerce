@@ -13,7 +13,8 @@ import Wrapper from '../components/ui/Wrapper';
 import { IProduct } from '../interface';
 import { AxiosError } from 'axios';
 import { getUserData } from '../data';
-import ProductDetailsSkeleton from '../components/ProductDetailsSkeleton';
+import ProductDetailsSkeleton from '../components/Skeletons/ProductDetailsSkeleton';
+import { useFavorites } from '../hooks/useFavourites';
 
 const Product = () => {
     const navigate = useNavigate();
@@ -21,8 +22,8 @@ const Product = () => {
     const [quantity, setQuantity] = useState(1);
     const userData = getUserData();
     const [addToCart, { isSuccess: isAddingSuccess, error: AddingError }] = useAddToCartMutation();
-
     const { isLoading, error, data } = useGetProductByIdQuery({ id: id || '' })
+    const { handleAddToFav, favouritesData } = useFavorites(userData);
 
     const productData = data as IProduct;
     const { data: relatedProducts } = useGetRelatedProductsQuery({ id: id || '' })
@@ -47,8 +48,7 @@ const Product = () => {
             })
         }
         if (AddingError) {
-            const errorObj = AddingError as { data: { error: string } }
-            toast.error(`${errorObj.data.error}`, {
+            toast.error(`Failed adding product to cart`, {
                 position: "top-right",
                 duration: 3000
             })
@@ -73,22 +73,22 @@ const Product = () => {
                     <div className="flex flex-col lg:flex-row gap-y-8 -mx-4">
                         <div className="md:flex-1 px-4 flex flex-col-reverse md:flex-row gap-4">
                             <ul className='h-auto md:h-[460px] flex md:flex-col gap-4'>
-                                <li>
+                                <li className='flex-1'>
                                     <img className="size-[100px] object-cover rounded-md border border-solid border-gray-300"
                                         src={productData.image ? productData.image : "https://cdn.pixabay.com/photo/2020/05/22/17/53/mockup-5206355_960_720.jpg"}
                                         alt="Product Image" />
                                 </li>
-                                <li>
+                                <li className='flex-1'>
                                     <img className="size-[100px] object-cover rounded-md border border-solid border-gray-300"
                                         src={productData.image ? productData.image : "https://cdn.pixabay.com/photo/2020/05/22/17/53/mockup-5206355_960_720.jpg"}
                                         alt="Product Image" />
                                 </li>
-                                <li>
+                                <li className='flex-1'>
                                     <img className="size-[100px] object-cover rounded-md border border-solid border-gray-300"
                                         src={productData.image ? productData.image : "https://cdn.pixabay.com/photo/2020/05/22/17/53/mockup-5206355_960_720.jpg"}
                                         alt="Product Image" />
                                 </li>
-                                <li>
+                                <li className='flex-1'>
                                     <img className="size-[100px] object-cover rounded-md border border-solid border-gray-300"
                                         src={productData.image ? productData.image : "https://cdn.pixabay.com/photo/2020/05/22/17/53/mockup-5206355_960_720.jpg"}
                                         alt="Product Image" />
@@ -147,7 +147,10 @@ const Product = () => {
                                 <Button width='w-fit' onClick={() => handleAddToCart(productData.id)}>
                                     Buy now
                                 </Button>
-                                <span className='px-3 flex items-center justify-center border border-solid border-gray-300 rounded-[4px] cursor-pointer'>
+                                <span
+                                    className={`px-3 flex items-center justify-center rounded-[4px] cursor-pointer
+                                        ${favouritesData && favouritesData.favourites.find(fav => fav.id === productData.id) ? 'text-white bg-red-500' : 'bg-white border border-solid border-gray-300'}`}
+                                    onClick={() => handleAddToFav(productData.id)}>
                                     <FaRegHeart />
                                 </span>
                             </div>

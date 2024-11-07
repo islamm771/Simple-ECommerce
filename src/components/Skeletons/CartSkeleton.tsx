@@ -1,5 +1,5 @@
 import { Table } from "flowbite-react"
-import PathElement from "./PathElement"
+import PathElement from "../PathElement"
 
 const CartSkeleton = () => {
     return (

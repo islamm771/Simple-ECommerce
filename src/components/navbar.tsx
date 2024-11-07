@@ -104,7 +104,7 @@ const MyNavbar = () => {
                         </form>
                         {userData && (
                             <>
-                                <Link to={"#"}>
+                                <Link to={"/favourite"}>
                                     <FaRegHeart />
                                 </Link>
                                 <Link to={"/cart"} className="relative">

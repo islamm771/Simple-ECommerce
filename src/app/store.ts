@@ -4,6 +4,7 @@ import cartSlice from './features/CartSlice';
 import productsSlice from './features/ProductsSlice';
 import categoriesSlice from './features/CategoriesSlice';
 import profileSlice from './features/ProfileSlice';
+import favouritesSlice from './features/FavouritesSlice';
 
 export const store = configureStore({
     reducer: {
@@ -11,10 +12,11 @@ export const store = configureStore({
         [productsSlice.reducerPath]: productsSlice.reducer,
         [categoriesSlice.reducerPath]: categoriesSlice.reducer,
         [profileSlice.reducerPath]: profileSlice.reducer,
+        [favouritesSlice.reducerPath]: favouritesSlice.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat([cartSlice.middleware,
-        productsSlice.middleware, categoriesSlice.middleware, profileSlice.middleware]),
+        productsSlice.middleware, categoriesSlice.middleware, profileSlice.middleware, favouritesSlice.middleware]),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

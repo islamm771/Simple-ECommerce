@@ -1,4 +1,4 @@
-import PathElement from './PathElement'
+import PathElement from '../PathElement'
 import ProductSkeleton from './ProductSkeleton'
 
 const ProductDetailsSkeleton = () => {
@@ -17,11 +17,9 @@ const ProductDetailsSkeleton = () => {
                         </ul>
                         <div className="w-full h-64 md:h-[460px] rounded-md flex-1 bg-gray-200 dark:bg-gray-700">
                         </div>
-
                     </div>
                     <div className="md:max-w-[420px] px-4">
                         <div className="w-48 h-2 rounded-sm bg-gray-200 dark:bg-gray-700 mb-4"></div>
-
                         <div className='flex items-center gap-4 mb-3'>
                             <span className={"flex gap-1"}>
                                 {Array.from({ length: 5 }).map((_, idx) => (
@@ -30,19 +28,14 @@ const ProductDetailsSkeleton = () => {
                             </span>
                             <div className="w-28 h-2 rounded-sm bg-gray-200 dark:bg-gray-700"></div>
                             <div className="w-28 h-2 rounded-sm bg-gray-200 dark:bg-gray-700"></div>
-
                         </div>
-
                         <div className="price w-48 h-2 rounded-sm bg-gray-200 dark:bg-gray-700 mb-4"></div>
-
                         <div className='describtion'>
                             <div className="describtion w-80 h-2 rounded-sm bg-gray-200 dark:bg-gray-700 mb-2.5"></div>
                             <div className="describtion w-72 h-2 rounded-sm bg-gray-200 dark:bg-gray-700 mb-2.5"></div>
                             <div className="describtion w-72 h-2 rounded-sm bg-gray-200 dark:bg-gray-700 mb-4"></div>
                         </div>
                         <hr className='mb-4' />
-
-
                         <div className="flex items-center gap-4 mb-4 color">
                             <div className="w-24 h-4 rounded-sm bg-gray-200 dark:bg-gray-700"></div>
                             <div className="flex items-center gap-1">
