@@ -2,13 +2,14 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { useAddToFavouriteMutation, useDeleteFromFavouriteMutation, useGetFavouriteQuery } from '../app/features/FavouritesSlice';
+import { skipToken } from '@reduxjs/toolkit/query/react';
 
 export const useFavorites = (userData: any) => {
     const navigate = useNavigate();
 
     const [addToFav, { isSuccess: isAddingFavSuccess, error: AddingFavError, reset: resetAdd }] = useAddToFavouriteMutation();
     const [removeFromFav, { isSuccess: isRemovingFavSuccess, error: RemovingFavError, reset: resetRemove }] = useDeleteFromFavouriteMutation();
-    const { data: favouritesData } = useGetFavouriteQuery({ userId: userData?.user?.id });
+    const { data: favouritesData } = useGetFavouriteQuery(userData ? { userId: userData?.user?.id } : skipToken);
 
     const handleAddToFav = async (productId: number) => {
         if (!userData) {

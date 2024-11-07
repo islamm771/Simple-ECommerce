@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
-import { useAddToCartMutation } from "../app/features/CartSlice"
+import { useAddToCartMutation, useGetCartQuery } from "../app/features/CartSlice"
 import { IProduct } from "../interface"
 import { getUserData } from "../data"
 import { FaHeart, FaRegHeart, FaStar } from 'react-icons/fa';
@@ -8,6 +8,8 @@ import { MdOutlineRemoveRedEye } from "react-icons/md"
 import { RiShoppingCart2Line } from "react-icons/ri"
 import { Link } from "react-router-dom"
 import { useFavorites } from "../hooks/useFavourites"
+import { skipToken } from '@reduxjs/toolkit/query/react';
+
 
 
 interface IProps {
@@ -18,12 +20,20 @@ interface IProps {
 const ProductCard = ({ product, isSale }: IProps) => {
     const [isCardHovered, setIsCardHovered] = useState(false)
     const userData = getUserData();
+    const { data: dataCart } = useGetCartQuery(userData ? { userId: userData.user.id } : skipToken)
     const [addToCart, { isSuccess: isAddingSuccess }] = useAddToCartMutation();
     const { favouritesData, handleAddToFav } = useFavorites(userData)
 
     const handleAddToCart = async (productId: number) => {
         if (!userData) {
             toast.error('Please log in to add products to cart', {
+                position: "top-right",
+                duration: 2000
+            })
+            return;
+        }
+        if (dataCart?.cart.find(product => product.id === productId)) {
+            toast.error('This product is already exist', {
                 position: "top-right",
                 duration: 2000
             })
@@ -55,7 +65,7 @@ const ProductCard = ({ product, isSale }: IProps) => {
                 {isSale && (
                     <span className='bg-red-600 text-white text-center w-11 py-1 block rounded-md text-xs absolute top-1 left-1 z-10'> -40% </span>
                 )}
-                <Link to={`/products/${product.id}`} className='block font-semibold'>
+                <Link to={`/products/${product.title.replace(/\s+/g, '_')}`} state={{ id: product.id }} className='block font-semibold'>
                     <img className="w-full h-52 object-cover transition-transform duration-500 hover:scale-110" src={product.image} alt={product.title} />
                 </Link>
                 <ul className='space-y-1 absolute top-1 right-1'>

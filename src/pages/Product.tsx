@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import { FaMinus, FaPlus, FaRegHeart, FaStar, FaTimes } from 'react-icons/fa';
 import { FaTruckFast } from "react-icons/fa6";
 import { TfiReload } from "react-icons/tfi";
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAddToCartMutation } from '../app/features/CartSlice';
 import { useGetProductByIdQuery, useGetRelatedProductsQuery } from '../app/features/ProductsSlice';
 import PathElement from '../components/PathElement';
@@ -18,15 +18,15 @@ import { useFavorites } from '../hooks/useFavourites';
 
 const Product = () => {
     const navigate = useNavigate();
-    const { id } = useParams();
+    const location = useLocation();
+    const { id } = location.state;
     const [quantity, setQuantity] = useState(1);
     const userData = getUserData();
-    const [addToCart, { isSuccess: isAddingSuccess, error: AddingError }] = useAddToCartMutation();
-    const { isLoading, error, data } = useGetProductByIdQuery({ id: id || '' })
-    const { handleAddToFav, favouritesData } = useFavorites(userData);
-
+    const { isLoading, error, data } = useGetProductByIdQuery({ id: id })
     const productData = data as IProduct;
-    const { data: relatedProducts } = useGetRelatedProductsQuery({ id: id || '' })
+    const [addToCart, { isSuccess: isAddingSuccess, error: AddingError }] = useAddToCartMutation();
+    const { handleAddToFav, favouritesData } = useFavorites(userData);
+    const { data: relatedProducts } = useGetRelatedProductsQuery({ id: id })
 
     const handleAddToCart = async (productId: number) => {
         if (!userData) {

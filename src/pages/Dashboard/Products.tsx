@@ -26,8 +26,8 @@ const Products = () => {
         count: 0,
     })
     const { data } = useGetAllProductsQuery();
-    const [addProduct, { isSuccess: isAddingSuccess }] = useAddProductMutation();
-    const [editProduct, { isSuccess: isEdittingSuccess }] = useUpdateProductMutation();
+    const [addProduct, { isSuccess: isAddingSuccess, reset: resetAdding }] = useAddProductMutation();
+    const [editProduct, { isSuccess: isEdittingSuccess, reset: resetEditting }] = useUpdateProductMutation();
 
     const { data: categories } = useGetAllCategoriesQuery()
     const [editModalOpen, setEditModalOpen] = useState(false);
@@ -131,6 +131,7 @@ const Products = () => {
             reset();
             setImageUrl('');
             setAddModalOpen(false);
+            resetAdding();
         }
         if (isEdittingSuccess) {
             toast.success('Product is editted successfully', {
@@ -139,8 +140,9 @@ const Products = () => {
             })
             setImageUrl('');
             setEditModalOpen(false);
+            resetEditting();
         }
-    }, [isAddingSuccess, isEdittingSuccess]);
+    }, [isAddingSuccess, isEdittingSuccess, resetAdding, resetEditting]);
     return (
         <>
             <button

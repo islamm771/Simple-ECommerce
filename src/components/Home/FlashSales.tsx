@@ -12,7 +12,8 @@ const FlashSales = () => {
     if (isLoading) return (
         <Wrapper title="Today's" classes='mb-10'>
             <h2 className="text-2xl font-semibold mt-5">Flash Sales</h2>
-            <div role="status" className="animate-pulse grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+            <div role="status" className="animate-pulse grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+                <ProductSkeleton />
                 <ProductSkeleton />
                 <ProductSkeleton />
                 <ProductSkeleton />
